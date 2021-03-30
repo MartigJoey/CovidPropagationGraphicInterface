@@ -20,7 +20,7 @@
   - [6.2. `Effectif`](#62-effectif)
 - [7. `Conclusion`](#7-conclusion)
 - [8. `Bibliographie`](#8-bibliographie)
-- [9. 4 `Table des figures`](#9-4-table-des-figures)
+- [9. `Table des figures`](#9-table-des-figures)
 - [10. `Livrables`](#10-livrables)
 # 2. `Introduction`
 Ce projet de stage consiste à la réalisation de l'interface graphique du travail de diplôme "Covid propagation". Il s'agit donc de la partie graphique qui permet la visualisation des individus, leurs déplacements, leur lieux de travail, etc. Elle permet d'aquérir une vision plus "logique" de la simulation en dehors des graphiques. Les individus saint, infecté et immunisé sont différencié par leurs couleurs. La même technique est utilisée pour différencier les différents batiments et véhicules mais avec d'autres code couleurs. Les véhicules sont aussi différencié par leur taille en plus de leur couleur.
@@ -110,7 +110,7 @@ J'ai prévu de d'abord commencé par codé la base de chaque objets et donc de l
 ## 6.2. `Effectif`
 # 7. `Conclusion`
 # 8. `Bibliographie`
-# 9. 4 `Table des figures`
+# 9. `Table des figures`
 - [Maquette du projet](#35-descriptif-du-projet)
 - [Structure du code](#522-structure)
 - [Planning prévisionnel](#61-Prévisionnel)

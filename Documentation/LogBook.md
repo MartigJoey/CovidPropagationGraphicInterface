@@ -42,5 +42,7 @@
   - Reflexion sur qui fait quoi ainsi que qui possède quoi
   - Impacte sur le travail de diplome (Implémentation)
   - ![Reflexion sur la structure du projet](Medias/Reflexion.png)
-
+- Début du code de l'interface
+  - Timer
+  - Paint
 # 31.03.2021
