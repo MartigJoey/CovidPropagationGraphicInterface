@@ -70,7 +70,7 @@
     <Compile Include="Classes\TimeManager.cs" />
     <Compile Include="Classes\Vehicle\Bus.cs" />
     <Compile Include="Classes\Vehicle\Car.cs" />
-    <Compile Include="Clock.cs" />
+    <Compile Include="Classes\Clock.cs" />
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,7 +83,7 @@
     <Compile Include="Classes\Person\Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\Trajectory.cs" />
+    <Compile Include="Classes\Person\Trajectory.cs" />
     <Compile Include="Classes\Vehicle\Vehicle.cs" />
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>

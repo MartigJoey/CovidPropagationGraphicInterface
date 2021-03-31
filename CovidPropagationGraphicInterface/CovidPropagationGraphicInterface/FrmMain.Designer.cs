@@ -30,19 +30,11 @@ namespace CovidPropagationGraphicInterface
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.graphicInterface = new CovidPropagationGraphicInterface.GraphicInterface();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.graphicInterface = new CovidPropagationGraphicInterface.GraphicInterface();
             this.SuspendLayout();
-            // 
-            // graphicInterface
-            // 
-            this.graphicInterface.Location = new System.Drawing.Point(12, 32);
-            this.graphicInterface.Name = "graphicInterface";
-            this.graphicInterface.Size = new System.Drawing.Size(776, 406);
-            this.graphicInterface.TabIndex = 0;
-            this.graphicInterface.Text = "graphicInterface";
             // 
             // btnStart
             // 
@@ -63,6 +55,18 @@ namespace CovidPropagationGraphicInterface
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.Stop_Click);
+            // 
+            // timer
+            // 
+            this.timer.Interval = 1000;
+            // 
+            // graphicInterface
+            // 
+            this.graphicInterface.Location = new System.Drawing.Point(12, 32);
+            this.graphicInterface.Name = "graphicInterface";
+            this.graphicInterface.Size = new System.Drawing.Size(776, 406);
+            this.graphicInterface.TabIndex = 0;
+            this.graphicInterface.Text = "graphicInterface";
             // 
             // FrmMain
             // 

@@ -18,7 +18,7 @@ namespace CovidPropagationGraphicInterface
 
         public void Paint(object sender, PaintEventArgs e)
         {
-            string drawString = $"Jours : {TimeManager.CurrentDayString} {System.Environment.NewLine}" +
+            string drawString = $"Jour : {TimeManager.CurrentDayString} {System.Environment.NewLine}" +
                                 $"Heure : {TimeManager.CurrentHour}";
             
             e.Graphics.DrawString(drawString, drawFont, drawBrush, _location);

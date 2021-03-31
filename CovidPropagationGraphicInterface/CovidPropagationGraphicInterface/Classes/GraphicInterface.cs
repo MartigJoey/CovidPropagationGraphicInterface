@@ -17,23 +17,26 @@ namespace CovidPropagationGraphicInterface
 
         Bitmap bmp = null;
         Graphics g = null;
+        Timer animationTimer;
         public GraphicInterface()
         {
             DoubleBuffered = true;
             clock = new Clock(new Point(10,10));
             Paint += clock.Paint;
+            animationTimer = new Timer();
+            animationTimer.Tick += new EventHandler(AnimationOnTick);
+            animationTimer.Interval = Constant.ANIMATION_TIMER_INTERVAL;
         }
 
         internal bool HasStarted { get => persons != null; }
 
-        public void Generate(List<Person> persons, List<Building> buildings)
+        public void Generate(List<Person> persons, List<Building> buildings, List<Vehicle> vehicles)
         {
-            Console.WriteLine("Generating...");
             this.persons = persons;
             this.buildings = buildings;
-            //persons.ForEach(x => { Paint += x.Paint; x.TeleportToLocation(); } );
+            persons.ForEach(x => { Paint += x.Paint; Paint += x.Trajectory.Paint ; x.TeleportToLocation(); } );
             buildings.ForEach(x => Paint += x.Paint);
-            Console.WriteLine("Generated");
+            vehicles.ForEach(x => Paint += x.Paint);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -48,17 +51,34 @@ namespace CovidPropagationGraphicInterface
             g.Clear(Color.DarkSlateGray);
             base.OnPaint(p);
             e.Graphics.DrawImage(bmp, new Point(0, 0));
-            //e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
         }
 
         public void OnTick(object sender, EventArgs e)
         {
+            TimeManager.NextPeriod();
+        }
+
+        public void AnimationOnTick(object sender, EventArgs e)
+        {
             if (HasStarted)
             {
-                TimeManager.NextPeriod();
                 persons.ForEach(x => x.Action());
                 Invalidate(true);
             }
         }
+
+        public void TimerStart()
+        {
+            animationTimer.Enabled = true;
+        }
+
+        public void TimerStop()
+        {
+            animationTimer.Enabled = false;
+        }
+
+        // méthode de positionnement des batiments
+
+        // méthode de modification de la taille des batiments, véhicules et individus en fonction du nombre d'éléments.
     }
 }

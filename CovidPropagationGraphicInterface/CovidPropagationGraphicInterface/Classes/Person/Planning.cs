@@ -18,7 +18,7 @@ namespace CovidPropagationGraphicInterface.Classes.Person
         private Day[] _days = new Day[Constant.NUMBER_OF_DAY];
 
         public Day[] Days { get => _days; }
-        public PointF Location { get => GetActivity(TimeManager.CurrentDay, TimeManager.CurrentPeriod).Location; }
+        public PointF Location { get => GetActivity(TimeManager.CurrentDay, TimeManager.CurrentPeriod).Inside; }
 
         public Planning(Day[] days)
         {

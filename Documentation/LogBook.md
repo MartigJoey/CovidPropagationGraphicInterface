@@ -68,3 +68,22 @@
 - Une activité (qui correspond à une période) doit être avoir un nouveau type d'activité ou simplement utiliser les batiments en tant que valeur ?
 - Modification de la classe TimeManager pour afficher le jour et l'heure
 - Création d'une classe "Clock" permettant l'affichage graphic du jour et de l'heure de la simulation.
+- Création de "faux" batiments destiné à être supprimé pour le travail de diplome
+- Création de "faux" individus destiné à être supprimé pour le travail de diplome
+- Penser à intégrer une fonctionnalité qui modifie la taille des éléments en fonction de la quantité d'éléments affiché. Permettant donc l'affichage de tous les éléments
+- Reflexion sur le fonctionnement du programme.
+  - Un timer qui décide et de l'animation ET du temps qui passe n'est pas concevable.
+  - Pour palier à ce problème, création d'un timer d'animation dans la class "GraphicInterface" permettant d'avoir 60 images par secondes peut importe l'interval du timer de la fenêtre principale qui s'occupe de faire s'écouler le temps.
+- Création des trajectoires
+- Aide impression couleur pour Gawen (10 min)
+- Création des déplacement des individus
+  - Vitesse
+  - Direction
+  - ![Reflexion sur les mouvements des individus](Medias/Movement.png)
+  - Quel timer effectue quelle action ? Le timer d'animation déplace tendit que le timer de la form définit la vitesse ?
+  - Oubli ⚠️ le planning doit contenir la durée du trajet. 
+    - Modification nécessaire.
+    - La période ne peut pas seulement contenir le batiment
+    - Utiliser les véhicule comme batiment à la place ?
+- Création des véhicules
+  - La personne dans le vehicule le suit ~~ou l'inverse ?~~

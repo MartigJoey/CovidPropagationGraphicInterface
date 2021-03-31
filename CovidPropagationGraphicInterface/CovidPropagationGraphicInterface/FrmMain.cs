@@ -1,4 +1,5 @@
 ﻿using CovidPropagationGraphicInterface.Classes;
+using CovidPropagationGraphicInterface.Classes.Person;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,30 +16,34 @@ namespace CovidPropagationGraphicInterface
     {
         List<Person> dummyPersons;
         List<Building> dummyBuilding;
+        List<Vehicle> dummyVehicle;
 
         public FrmMain()
         {
             InitializeComponent();
             timer.Tick += new EventHandler(graphicInterface.OnTick);
             TimeManager.Init();
-            dummyPersons = new List<Person>();
             dummyBuilding = GenerateDummyBuildings(20);
-            graphicInterface.Generate(dummyPersons, dummyBuilding);
+            dummyVehicle = GenerateDummyVehicle(30);
+            dummyPersons = GenerateDummyPersons(30);
+            graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle);
         }
 
         private void Start_Click(object sender, EventArgs e)
         {
             timer.Enabled = true;
+            graphicInterface.TimerStart();
         }
 
         private void Stop_Click(object sender, EventArgs e)
         {
             timer.Enabled = false;
+            graphicInterface.TimerStop();
         }
 
         /// <summary>
-        /// Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
-        /// lors du travail de diplome pour permettre la création de batiement par la simulation.
+        /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
+        /// lors du travail de diplome pour permettre la création de batiement par la simulation. ⚠️
         /// </summary>
         /// <param name="quantity"></param>
         /// <returns></returns>
@@ -81,19 +86,77 @@ namespace CovidPropagationGraphicInterface
                 {
                     type = BuildingType.Hospital;
                 }
+                Console.WriteLine(graphicInterface.Size.Width);
+                int positionX = rdm.Next(0, graphicInterface.Size.Width - defaultSize);
+                int positionY = rdm.Next(0, graphicInterface.Size.Height - defaultSize);
 
-                buildings.Add(new Building(new Point((defaultLocationX + defaultSize + space) * i, defaultLocationY), new Size(defaultSize, defaultSize), type));
+                buildings.Add(new Building(new Point(positionX, positionY), new Size(defaultSize, defaultSize), type));
             }
             return buildings;
         }
 
         /// <summary>
-        /// Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
-        /// lors du travail de diplome pour permettre la création d'individus par la simulation.
+        /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
+        /// lors du travail de diplome pour permettre la création d'individus par la simulation. ⚠️
         /// </summary>
         private List<Person> GenerateDummyPersons(int quantity)
         {
-            
+            Random rdm = new Random();
+            List<Person> persons = new List<Person>();
+            for (int i = 0; i < quantity; i++)
+            {
+                persons.Add(CreatePerson(rdm));
+            }
+
+            return persons;
+        }
+
+        /// <summary>
+        /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
+        /// lors du travail de diplome pour permettre la création d'individus par la simulation. ⚠️
+        /// </summary>
+        private Person CreatePerson(Random rdm)
+        {
+            Classes.Person.Day[] day = new Classes.Person.Day[Constant.NUMBER_OF_DAY];
+            for (int i = 0; i < Constant.NUMBER_OF_DAY; i++)
+            {
+                Period[] period = new Period[Constant.NUMBER_OF_PERIODS];
+                for (int j = 0; j < Constant.NUMBER_OF_PERIODS; j++)
+                {
+                    int nbBuilding = dummyBuilding.Count - 1;
+                    Building firstactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+                    Building secondactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+                    Building thirdactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+
+                    if (j < Constant.NUMBER_OF_PERIODS / 3)
+                    {
+                        period[j] = new Period(firstactivity);
+                    }else if (j < (Constant.NUMBER_OF_PERIODS / 3) * 2)
+                    {
+                        period[j] = new Period(secondactivity);
+                    }else if (j < Constant.NUMBER_OF_PERIODS)
+                    {
+                        period[j] = new Period(thirdactivity);
+                    }
+                }
+                day[i] = new Classes.Person.Day(period);
+            }
+            Planning planning = new Planning(day);
+            return new Person(planning, dummyVehicle[0]);
+        }
+
+        /// <summary>
+        /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
+        /// lors du travail de diplome pour permettre la création d'individus par la simulation. ⚠️
+        /// </summary>
+        private List<Vehicle> GenerateDummyVehicle(int quantity)
+        {
+            List<Vehicle> vehicles = new List<Vehicle>();
+            for (int i = 0; i < quantity; i++)
+            {
+                vehicles.Add(new Car());
+            }
+            return vehicles;
         }
     }
 }
