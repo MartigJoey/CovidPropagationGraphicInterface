@@ -1,56 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="CovidPropagationGraphicInterface.Trajectory">
-    <Position X="13" Y="2.25" Width="1.5" />
+    <Position X="21.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classes\Trajectory.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.Bus">
-    <Position X="6.5" Y="2.5" Width="1.5" />
+    <Position X="14.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classes\Vehicle\Bus.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.Car">
-    <Position X="8.75" Y="2.5" Width="1.5" />
+    <Position X="16.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classes\Vehicle\Car.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.Vehicle" Collapsed="true">
-    <Position X="7.75" Y="1.25" Width="1.5" />
+    <Position X="15.75" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Classes\Vehicle\Vehicle.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.Building">
-    <Position X="11.25" Y="1.25" Width="1.5" />
+    <Position X="13" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAIgAAAAAIAAAAAAAAAAAAAACAAAAIIAAA=</HashCode>
       <FileName>Classes\Building.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.GraphicInterface">
     <Position X="13" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>EACAAAAAAAAAAAIAAAAAAAAAAAAACAAIAQAAEEAAAAA=</HashCode>
       <FileName>Classes\GraphicInterface.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="persons" />
+      <Field Name="buildings" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.Person">
-    <Position X="11.25" Y="2.25" Width="1.5" />
+    <Position X="16.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Classes\Person.cs</FileName>
+      <HashCode>AAAACAAAAAAIAAABAAAAAAAAAAAAAAAIAiAAAAKIAAQ=</HashCode>
+      <FileName>Classes\Person\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CovidPropagationGraphicInterface.Classes.Person.Planning">
+    <Position X="19.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAQAAAIAAAAAA=</HashCode>
+      <FileName>Classes\Person\Planning.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_days" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CovidPropagationGraphicInterface.Classes.Person.Period">
+    <Position X="19.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Classes\Person\Period.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_activity" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CovidPropagationGraphicInterface.Classes.Person.Day">
+    <Position X="19.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAQAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Person\Day.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_periods" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CovidPropagationGraphicInterface.Classes.TimeManager">
+    <Position X="10.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAABAAAAAQAAAAAAGAAAABAA=</HashCode>
+      <FileName>Classes\TimeManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CovidPropagationGraphicInterface.Classes.Constant">
+    <Position X="10.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Classes\Constant.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="CovidPropagationGraphicInterface.BuildingType">
-    <Position X="11.25" Y="3.5" Width="1.5" />
+    <Position X="10.25" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>oAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAABAAAAAA=</HashCode>
       <FileName>Classes\Buildingtype.cs</FileName>

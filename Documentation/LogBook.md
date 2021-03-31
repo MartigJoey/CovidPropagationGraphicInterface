@@ -45,4 +45,26 @@
 - Début du code de l'interface
   - Timer
   - Paint
+- Bug git - Visual studio
+  - Suppression de la moitié du projet c#
+  - Recréation du projet
 # 31.03.2021
+- Développement documentation
+  - Planning
+  - Structure
+  - Ajoute de figures
+- Réflexion sur la structure des jours de la semaine dans le planning
+  - Tableau ? --> taille fixe, simple
+  - ~~Variables --> 7, propriété ? --> simple d'appel et clair~~
+- Création de la classes individus et du planning
+  - Nouvelle version de la structure de classe
+  - Les véhicules n'étant pas encore implémenté, ils sont relié à aucune autre classe.
+  - Le type de batiment est uniquement utilisé pour définir la couleur du batiment à la création.
+  - ![Diagramme de classe Modifié](Medias/ClassDiagram2.png)
+- Création d'une classe static de constantes permettant leur appelle dans tout le projet et évitant la redondance.
+- Créer une classe similaire pour gérer le temps ? Afin d'éviter de constamment demander l'heure qu'il est à une classe parent. Appeler une classe static gérant le temps (Pas un timer mais un compteur de jours et de périods.)
+- Création de la classe static TimeManager
+- La classe Planning est commune à la simulation ainsi qu'à l'interface graphique.
+- Une activité (qui correspond à une période) doit être avoir un nouveau type d'activité ou simplement utiliser les batiments en tant que valeur ?
+- Modification de la classe TimeManager pour afficher le jour et l'heure
+- Création d'une classe "Clock" permettant l'affichage graphic du jour et de l'heure de la simulation.

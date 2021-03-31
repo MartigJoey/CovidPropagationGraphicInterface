@@ -10,14 +10,43 @@ namespace CovidPropagationGraphicInterface
 {
     class Building
     {
-        public Building()
-        {
+        private Point _location;
+        private Size _size;
+        private Pen _color;
 
+        public Point Location { get => _location; }
+        public Size Size { get => _size;}
+
+        public Building(Point location, Size size, BuildingType type)
+        {
+            this._location = location;
+            this._size = size;
+
+            switch (type)
+            {
+                case BuildingType.School:
+                    _color = Pens.Beige;
+                    break;
+                case BuildingType.Hospital:
+                    _color = Pens.Red;
+                    break;
+                case BuildingType.Company:
+                    _color = Pens.Yellow;
+                    break;
+                case BuildingType.Supermarket:
+                    _color = Pens.Green;
+                    break;
+                case BuildingType.Restaurant:
+                    _color = Pens.Gold;
+                    break;
+                default:
+                    break;
+            }
         }
 
-        public void Action()
+        public void Paint(object sender, PaintEventArgs e)
         {
-
+            e.Graphics.DrawRectangle(_color, new Rectangle(_location, _size));
         }
     }
 }

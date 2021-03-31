@@ -8,6 +8,7 @@
   - [3.3. `Matériel et logiciels`](#33-matériel-et-logiciels)
   - [3.4. `Prérequis`](#34-prérequis)
   - [3.5. `Descriptif du projet`](#35-descriptif-du-projet)
+  - [3.6. `MindMap`](#36-mindmap)
 - [4. `Environnement`](#4-environnement)
 - [5. `Architecture`](#5-architecture)
   - [5.1. `Arborescence`](#51-arborescence)
@@ -15,6 +16,7 @@
     - [5.2.1. `Méthodes`](#521-méthodes)
     - [5.2.2. `Structure`](#522-structure)
     - [5.2.3. `Implémentation dans le travail de diplôme`](#523-implémentation-dans-le-travail-de-diplôme)
+    - [5.2.4. `Activités`](#524-activités)
 - [6. `Planning`](#6-planning)
   - [6.1. `Prévisionnel`](#61-prévisionnel)
   - [6.2. `Effectif`](#62-effectif)
@@ -27,7 +29,7 @@ Ce projet de stage consiste à la réalisation de l'interface graphique du trava
 
 Ce travail est très important pour le travail de diplôme car il en fait parti mais surtout car il permet de facilement se rendre compte si la simulation se déroule correctement ou si il y a un ou plusieurs bug. Il permet donc d'améliorer mon rendement et de rendre le développement plus rapide et efficace.
 
-Pour réaliser se travail, il faudra que je simule une simulation. Pour fonctionner, l'interface à besoin de données mais ces données n'étant pas encore créées, je vais devoir en générés des fausses.
+Pour réaliser se travail, il faudra que je simule des données d'individus. Pour fonctionner, l'interface à besoin de données mais ces données n'étant pas encore créées, je vais devoir en générer des fausses.
 # 3. `Cahier des charges`
 ## 3.1. `Titre`
 Covid propagation
@@ -66,7 +68,12 @@ Covid propagation
 ## 3.5. `Descriptif du projet`
 L'interface graphique affiche les individus ainsi que leur lieur de travail, habitation et déplacements. Elle permet d'avoir une visualisation plus naturelle de la situation. La structure est simple pour éviter des complexification liée aux routes et autres éléments qui ne sont pas important pour ce travail. Il s'agit donc d'une aide visuel de la simulation. Il n'y a donc pas de routes ou autres éléments complexe similaires.
 Voici deux exemples d'interface graphique :
+
 ![Exemple de deux interfaces graphiques](Medias/ExemplesInterfaceGraphique.png)
+<center>Figure 1: Maquette du projet</center>
+
+## 3.6. `MindMap`
+
 
 # 4. `Environnement`
 L'environnement de travail est composé d'un pc technicien, 3 écrans, clavier, souris et d'un ssd amovible avec windows 10 pro version 10.0.19042 Build 19042. Le code est réalisé à l'aide de visual studio 2019 version 16.9.2. La documentation et le logbook sont réalisé à l'aide de visual studio code et des extensions Markdown All in One et Mardown PDF.
@@ -92,8 +99,12 @@ L'environnement de travail est composé d'un pc technicien, 3 écrans, clavier, 
 ### 5.2.1. `Méthodes`
 
 ### 5.2.2. `Structure`
+La classe GraphicInterface s'occupe de gérer tous les objets graphics (Position, Temps, etc.). La classe Person est une version différente de celle se trouvant dans la simulation. Outre son status, elle ne compte que des éléments graphiques. Le même cas s'applique aux batiments, et vehicules qui sont une reproduction graphique de leur équivalents dans la simulation.
 
+Seul la trajectoire est unique à cette section du projet car il s'agit d'un élément purement graphique. Elle est là uniquement pour aider à visualiser les trajectoires des individus.
 ![Planning prévisionnel](Medias/ClassDiagram1.png)
+<center>Figure 2: Structure de classe initial</center>
+
 ### 5.2.3. `Implémentation dans le travail de diplôme`
 Le résultat de ce travail étant la partie graphique de mon travail de diplôme, j'ai du pensé à une manière simple et efficace de l'implémenté à l'intérieur. J'ai pensé à différentes approches.
 
@@ -103,10 +114,15 @@ En deuxième, j'ai pensé à une interface qui serait controllée par la simulat
 
 Et pour terminer celle que j'ai choisis, il s'agit de séparer l'interface graphique de la simulation. Pour ce faire, il faut malheureusement une structure similaire à la simulation ce qui peut finir par réduire drastiquement les performances du projet. Cependant, la structure du code n'en sera que plus propre et le fait que les deux soient autonome évitera de les problèmes de modification de la simulation impactant l'interface graphique.
 
+### 5.2.4. `Activités`
+(Reformuler et trier le logbook)
+
 # 6. `Planning`
 ## 6.1. `Prévisionnel`
 J'ai prévu de d'abord commencé par codé la base de chaque objets et donc de les afficher. Une fois qu'ils sont tous affiché, je prévois de commencer à effectuer les déplacement ainsi que le status des individus. Seulement une fois qu'ils sont capables de se déplacer, j'implémenterai les véhicules. Si tout se passe bien, il me restera du temps le dernier jour pour tout peaufiner.
 ![Planning prévisionnel](Medias/PlanningPrevisionnel.png)
+<center>Figure 3: Planning prévisionnel du projet</center>
+
 ## 6.2. `Effectif`
 # 7. `Conclusion`
 # 8. `Bibliographie`
