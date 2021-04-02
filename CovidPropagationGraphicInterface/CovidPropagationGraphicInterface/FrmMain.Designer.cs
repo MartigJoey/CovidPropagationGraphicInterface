@@ -58,7 +58,7 @@ namespace CovidPropagationGraphicInterface
             // 
             // timer
             // 
-            this.timer.Interval = 1000;
+            this.timer.Interval = 500;
             // 
             // graphicInterface
             // 

@@ -11,7 +11,7 @@
             _periods = periods;
         }
 
-        public Building GetActivity(int period)
+        public Activity GetActivity(int period)
         {
             return Periods[period].Activity;
         }

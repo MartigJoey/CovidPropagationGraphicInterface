@@ -24,8 +24,8 @@ namespace CovidPropagationGraphicInterface
             timer.Tick += new EventHandler(graphicInterface.OnTick);
             TimeManager.Init();
             dummyBuilding = GenerateDummyBuildings(20);
-            dummyVehicle = GenerateDummyVehicle(30);
-            dummyPersons = GenerateDummyPersons(30);
+            dummyVehicle = GenerateDummyVehicle(5);
+            dummyPersons = GenerateDummyPersons(5);
             graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle);
         }
 
@@ -86,7 +86,6 @@ namespace CovidPropagationGraphicInterface
                 {
                     type = BuildingType.Hospital;
                 }
-                Console.WriteLine(graphicInterface.Size.Width);
                 int positionX = rdm.Next(0, graphicInterface.Size.Width - defaultSize);
                 int positionY = rdm.Next(0, graphicInterface.Size.Height - defaultSize);
 
@@ -105,7 +104,7 @@ namespace CovidPropagationGraphicInterface
             List<Person> persons = new List<Person>();
             for (int i = 0; i < quantity; i++)
             {
-                persons.Add(CreatePerson(rdm));
+                persons.Add(CreatePerson(rdm, i));
             }
 
             return persons;
@@ -115,18 +114,19 @@ namespace CovidPropagationGraphicInterface
         /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
         /// lors du travail de diplome pour permettre la création d'individus par la simulation. ⚠️
         /// </summary>
-        private Person CreatePerson(Random rdm)
+        private Person CreatePerson(Random rdm, int personIndex)
         {
             Classes.Person.Day[] day = new Classes.Person.Day[Constant.NUMBER_OF_DAY];
+
+            int nbBuilding = dummyBuilding.Count - 1;
+            Building firstactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+            Building secondactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+            Building thirdactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
             for (int i = 0; i < Constant.NUMBER_OF_DAY; i++)
             {
                 Period[] period = new Period[Constant.NUMBER_OF_PERIODS];
                 for (int j = 0; j < Constant.NUMBER_OF_PERIODS; j++)
                 {
-                    int nbBuilding = dummyBuilding.Count - 1;
-                    Building firstactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
-                    Building secondactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
-                    Building thirdactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
 
                     if (j < Constant.NUMBER_OF_PERIODS / 3)
                     {
@@ -137,6 +137,20 @@ namespace CovidPropagationGraphicInterface
                     }else if (j < Constant.NUMBER_OF_PERIODS)
                     {
                         period[j] = new Period(thirdactivity);
+                    }
+
+                    Vehicle travelCar = dummyVehicle[personIndex];
+                    if (j == Constant.NUMBER_OF_PERIODS / 3)
+                    {
+                        period[j] = new Period(travelCar);
+                    }
+                    else if (j == (Constant.NUMBER_OF_PERIODS / 3) * 2)
+                    {
+                        period[j] = new Period(travelCar);
+                    }
+                    else if (j == Constant.NUMBER_OF_PERIODS)
+                    {
+                        period[j] = new Period(travelCar);
                     }
                 }
                 day[i] = new Classes.Person.Day(period);

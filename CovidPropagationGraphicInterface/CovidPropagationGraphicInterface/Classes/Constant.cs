@@ -14,7 +14,8 @@ namespace CovidPropagationGraphicInterface.Classes
         public const int NUMBER_OF_PERIODS = MINUTES_PER_DAY / TIME_OF_PERIOD; // 1440 = 1 jour en minutes
         public const int NUMBER_OF_DAY = 7;
 
-        public const int ANIMATION_TIMER_INTERVAL = 15; // ~60 image par seconde
+        public const int ANIMATION_FPS = 60;
+        public const int ANIMATION_TIMER_INTERVAL = 1000 / ANIMATION_FPS;
 
         public const int BUS_MAX_PERSON = 18;
         public const int CAR_MAX_PERSON = 4;

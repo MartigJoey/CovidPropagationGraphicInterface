@@ -13,16 +13,17 @@ namespace CovidPropagationGraphicInterface
     {
         public Car(Point location, Size size, int maxPerson, Pen color) : base(location, size, maxPerson, color)
         {
-            // Do nothing
+            // Does nothing
         }
         public Car() : this(new Point(0, 0), Constant.CAR_SIZE, Constant.CAR_MAX_PERSON, Pens.White)
         {
-            // Do nothing
+            // Does nothing
         }
 
-        public override void Paint(object sender, PaintEventArgs e)
+        public void GoToLocation(PointF destination)
         {
-            e.Graphics.DrawRectangle(_color, new Rectangle(_location, _size));
+            _location = destination;
+            // Même algorithm que pour le déplacement d'individus
         }
     }
 }

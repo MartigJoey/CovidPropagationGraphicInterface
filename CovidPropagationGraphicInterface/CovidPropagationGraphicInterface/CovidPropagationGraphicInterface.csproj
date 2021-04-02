@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Activity.cs" />
     <Compile Include="Classes\Building.cs" />
     <Compile Include="Classes\Buildingtype.cs" />
     <Compile Include="Classes\Constant.cs" />

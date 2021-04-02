@@ -13,6 +13,8 @@ namespace CovidPropagationGraphicInterface
     {
         List<Person> persons;
         List<Building> buildings;
+        List<Vehicle> vehicles;
+
         Clock clock;
 
         Bitmap bmp = null;
@@ -34,6 +36,7 @@ namespace CovidPropagationGraphicInterface
         {
             this.persons = persons;
             this.buildings = buildings;
+            this.vehicles = vehicles;
             persons.ForEach(x => { Paint += x.Paint; Paint += x.Trajectory.Paint ; x.TeleportToLocation(); } );
             buildings.ForEach(x => Paint += x.Paint);
             vehicles.ForEach(x => Paint += x.Paint);
@@ -56,13 +59,15 @@ namespace CovidPropagationGraphicInterface
         public void OnTick(object sender, EventArgs e)
         {
             TimeManager.NextPeriod();
+            persons.ForEach(x => x.ChangeDestination());
         }
 
         public void AnimationOnTick(object sender, EventArgs e)
         {
             if (HasStarted)
             {
-                persons.ForEach(x => x.Action());
+                persons.ForEach(x => x.GoToLocation());
+                //vehicles.ForEach(x => x.TeleportToLocation());
                 Invalidate(true);
             }
         }

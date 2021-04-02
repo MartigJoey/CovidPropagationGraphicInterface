@@ -87,3 +87,24 @@
     - Utiliser les véhicule comme batiment à la place ?
 - Création des véhicules
   - La personne dans le vehicule le suit ~~ou l'inverse ?~~
+
+# 01.04.2021
+- Modification du planning pour y intégrer les trajets
+  - Création d'une interface "Activity" intégrant une propriété récupérant la position de l'activity ainsi que l'emplacement interne de celui-ci.
+- Création de "faux" véhicules destiné à être supprimé pour le travail de diplome
+- Modification du fonctionnement d'un individu
+    - Changement de quel timer affect quel évènement.
+    - Timer principal --> Change l'activité donc la destination
+    - Timer d'animation --> Déplace l'individus vers sa destination
+- ~~Ajout d'une classe "Walk" Si un individus marche à la place de prendre un véhicule.~~
+  - ~~`Penser à changer le nom de la classe parent.`~~
+  - ~~Peut être même à supprimer et simplement utiliser la classe person pour le déplacement~~
+
+# 02.04.2021
+- Utiliser des points dans les véhicules qu'un individus n'aura qu'à récupérer pour connaitre sa position dans le véhicule.
+- Déplacement des individus
+  - En fonction du timer d'animation
+  - Calcul la distance a parcouris
+  - La divise par le nombre de fps
+  - Utilise le résultat pour se déplacer à chaque frame
+  - ![Calcul des déplacements des individus](Medias/Movement2.png)

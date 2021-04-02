@@ -9,15 +9,15 @@ using CovidPropagationGraphicInterface.Classes;
 
 namespace CovidPropagationGraphicInterface
 {
-    class Building
+    class Building : Activity
     {
         private Random rdm = new Random();
         private Point _location;
         private Size _size;
         private Pen _color;
 
-        public Point Location { get => _location; }
-        public Point Inside { get => new Point(
+        public PointF Location { get => _location; }
+        public PointF Inside { get => new Point(
                                         rdm.Next(_location.X + Constant.PERSON_SIZE.Width, _location.X + _size.Width - Constant.PERSON_SIZE.Width),
                                         rdm.Next(_location.Y + Constant.PERSON_SIZE.Height, _location.Y + _size.Height - Constant.PERSON_SIZE.Height)
                                     ); 

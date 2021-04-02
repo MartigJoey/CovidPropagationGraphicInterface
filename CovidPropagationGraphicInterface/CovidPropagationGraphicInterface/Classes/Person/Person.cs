@@ -17,36 +17,55 @@ namespace CovidPropagationGraphicInterface
         private PointF _location;
         private PointF _departure;
         private PointF _oldDestination;
+        private PointF _destination;
         private Size _size;
         private Brush _color;
-        private Vehicle movementMethod;
+        private float _movementX;
+        private float _movementY;
 
         internal Trajectory Trajectory { get => _trajectory; }
 
         public Person(Planning planning, Vehicle vehicle)
         {
             this._planning = planning;
-            movementMethod = vehicle;
             _color = Brushes.Blue;
             _size = Constant.PERSON_SIZE;
             _trajectory = new Trajectory();
             TeleportToLocation();
         }
 
-        public void Action()
+        public void ChangeDestination()
         {
-            PointF destination = _planning.Location;
-            GoToLocation(destination); // Utiliser le véhicule pour les déplacements hors batiments
+            _destination = _planning.Location;
+            switch (_planning.GetActivity())
+            {
+                case Car car:
+                    //PointF carDestination = _planning.NextLocation;
+                    //car.GoToLocation(_location);
+                    //car.GoToLocation(carDestination);
+                    // TeleportToLocation();// Remplacer par un déplacement rapide
+                    CalculateMovementSpeed();
+                    break;
+                case Bus bus:
+                    break;
+                default:
+                    CalculateMovementSpeed();
+                    break;
+            }
+            //GoToLocation(destination); // Utiliser le véhicule pour les déplacements hors batiments
+            //TeleportToLocation();
         }
-        private void GoToLocation(PointF destination)
+        public void GoToLocation()
         {
-            if (!destination.Equals(_oldDestination))
+            /*if (!_destination.Equals(_oldDestination))
             {
                 _departure = _location;
-                _oldDestination = destination;
+                _oldDestination = _destination;
                 // Calcule vitesse
-                _trajectory.SetTrajectory(_departure, destination);
-            }
+                _trajectory.SetTrajectory(_departure, _destination);
+            }*/
+            _location.X += _movementX;
+            _location.Y += _movementY;
 
             // _location.X += vitesse.X;
             // _location.Y += vitesse.Y;
@@ -58,9 +77,23 @@ namespace CovidPropagationGraphicInterface
              */
         }
 
-        private void CalculateSpeed()
+        private void CalculateMovementSpeed()
         {
+            float distanceX, distanceY;
 
+            distanceX = (float)Math.Sqrt(Math.Pow(_destination.X - _location.X, 2));
+            distanceY = (float)Math.Sqrt(Math.Pow(_destination.Y - _location.Y, 2));
+
+            distanceX = _destination.X < _location.X ? distanceX * -1 : distanceX;
+            distanceY = _destination.Y < _location.Y ? distanceY * -1 : distanceY;
+
+            _movementX = distanceX / Constant.ANIMATION_FPS;
+            _movementY = distanceY / Constant.ANIMATION_FPS;
+        }
+
+        public void TeleportToLocation(PointF destination)
+        {
+            _location = destination;
         }
 
         /// <summary>
@@ -68,8 +101,7 @@ namespace CovidPropagationGraphicInterface
         /// </summary>
         public void TeleportToLocation()
         {
-            PointF destination = _planning.Location;
-            _location = destination;
+            _location = _planning.Location;
         }
 
         public void Paint(object sender, PaintEventArgs e)
