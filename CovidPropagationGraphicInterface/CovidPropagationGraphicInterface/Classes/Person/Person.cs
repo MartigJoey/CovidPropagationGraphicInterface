@@ -15,8 +15,6 @@ namespace CovidPropagationGraphicInterface
         private Trajectory _trajectory;
         private Planning _planning;
         private PointF _location;
-        private PointF _departure;
-        private PointF _oldDestination;
         private PointF _destination;
         private Size _size;
         private Brush _color;
@@ -40,41 +38,37 @@ namespace CovidPropagationGraphicInterface
             switch (_planning.GetActivity())
             {
                 case Car car:
-                    //PointF carDestination = _planning.NextLocation;
-                    //car.GoToLocation(_location);
-                    //car.GoToLocation(carDestination);
-                    // TeleportToLocation();// Remplacer par un déplacement rapide
-                    CalculateMovementSpeed();
+                    PointF carDestination = _planning.NextLocation;
+                    car.TeleportToLocation(_location);
+                    car.SetDestination(carDestination);
+                    TeleportToLocation(car.Inside);// Remplacer par un déplacement
+                    _trajectory.Enabled = true;
+                    _trajectory.SetTrajectory(_location, carDestination);
                     break;
                 case Bus bus:
                     break;
                 default:
                     CalculateMovementSpeed();
+                    _trajectory.Enabled = false;
                     break;
             }
-            //GoToLocation(destination); // Utiliser le véhicule pour les déplacements hors batiments
-            //TeleportToLocation();
         }
+
         public void GoToLocation()
         {
-            /*if (!_destination.Equals(_oldDestination))
+            switch (_planning.GetActivity())
             {
-                _departure = _location;
-                _oldDestination = _destination;
-                // Calcule vitesse
-                _trajectory.SetTrajectory(_departure, _destination);
-            }*/
-            _location.X += _movementX;
-            _location.Y += _movementY;
-
-            // _location.X += vitesse.X;
-            // _location.Y += vitesse.Y;
-
-            /*
-             * Quand il change de destination, calculer sa vitesse et afficher sa trajectoire UNE FOIS. X
-             * Une fois la vitesse calculée, commencer le déplacement.
-             * Incrémenter ou décrémenter sa position en x et en y en fonction de sa vitesse.
-             */
+                case Car car:
+                    car.GoToLocation();
+                    _location = car.Inside;
+                    break;
+                case Bus bus:
+                    break;
+                default:
+                    _location.X += _movementX;
+                    _location.Y += _movementY;
+                    break;
+            }
         }
 
         private void CalculateMovementSpeed()
@@ -87,8 +81,8 @@ namespace CovidPropagationGraphicInterface
             distanceX = _destination.X < _location.X ? distanceX * -1 : distanceX;
             distanceY = _destination.Y < _location.Y ? distanceY * -1 : distanceY;
 
-            _movementX = distanceX / Constant.ANIMATION_FPS;
-            _movementY = distanceY / Constant.ANIMATION_FPS;
+            _movementX = distanceX / Constant.ANIMATION_PER_PERIOD;
+            _movementY = distanceY / Constant.ANIMATION_PER_PERIOD;
         }
 
         public void TeleportToLocation(PointF destination)

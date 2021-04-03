@@ -19,7 +19,7 @@ namespace CovidPropagationGraphicInterface.Classes.Person
 
         public Day[] Days { get => _days; }
         public PointF Location { get => GetActivity(TimeManager.CurrentDay, TimeManager.CurrentPeriod).Inside; }
-        public PointF NextLocation { get => GetActivity(TimeManager.CurrentDay, TimeManager.CurrentPeriod + 1).Inside; }
+        public PointF NextLocation { get => GetNextActivity().Inside; }
 
         public Planning(Day[] days)
         {
@@ -34,6 +34,12 @@ namespace CovidPropagationGraphicInterface.Classes.Person
         public Activity GetActivity()
         {
             return _days[TimeManager.CurrentDay].GetActivity(TimeManager.CurrentPeriod);
+        }
+
+        public Activity GetNextActivity()
+        {
+            int[] nextPeiod = TimeManager.GetNextPeriod();
+            return _days[nextPeiod[0]].GetActivity(nextPeiod[1]);
         }
     }
 }

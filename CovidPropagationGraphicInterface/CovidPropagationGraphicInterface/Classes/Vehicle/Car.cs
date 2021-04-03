@@ -19,11 +19,5 @@ namespace CovidPropagationGraphicInterface
         {
             // Does nothing
         }
-
-        public void GoToLocation(PointF destination)
-        {
-            _location = destination;
-            // Même algorithm que pour le déplacement d'individus
-        }
     }
 }

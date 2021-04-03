@@ -14,8 +14,11 @@ namespace CovidPropagationGraphicInterface
         protected Random rdm = new Random();
         protected PointF _location;
         protected Size _size;
+        private PointF _destination;
         protected Pen _color;
         protected int _maxPersons;
+        private float _movementX;
+        private float _movementY;
 
         public PointF Location { get => _location; }
         public PointF Inside // A modifier pour intégrer un système de "siège" / places fixes limitées.
@@ -35,10 +38,40 @@ namespace CovidPropagationGraphicInterface
             _color = color;
         }
 
-        public void TeleportToLocation()
+        public void TeleportToLocation(PointF destination)
         {
-            PointF destination;
-            //_location = destination;
+            _location = destination;
+        }
+
+        public void SetDestination(PointF destination)
+        {
+            _destination = destination; 
+            CalculateMovementSpeed();
+        }
+
+        public void GoToLocation()
+        {
+            _location.X += _movementX;
+            _location.Y += _movementY;
+        }
+
+        private void CalculateMovementSpeed()
+        {
+            float distanceX, distanceY;
+
+            distanceX = (float)Math.Sqrt(Math.Pow(_destination.X - _location.X, 2));
+            distanceY = (float)Math.Sqrt(Math.Pow(_destination.Y - _location.Y, 2));
+
+            distanceX = _destination.X < _location.X ? distanceX * -1 : distanceX;
+            distanceY = _destination.Y < _location.Y ? distanceY * -1 : distanceY;
+
+            _movementX = distanceX / Constant.ANIMATION_PER_PERIOD;
+            _movementY = distanceY / Constant.ANIMATION_PER_PERIOD;
+            //Console.WriteLine($"Movement {_movementX} {_movementY}");
+            //Console.WriteLine($"Distance {distanceX} {distanceY}");
+            //Console.WriteLine($"Destination {_destination}");
+            //Console.WriteLine($"Location {_location}");
+            //Console.WriteLine("_______________________");
         }
 
         public void Paint(object sender, PaintEventArgs e)

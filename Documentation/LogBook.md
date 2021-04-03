@@ -108,3 +108,14 @@
   - La divise par le nombre de fps
   - Utilise le résultat pour se déplacer à chaque frame
   - ![Calcul des déplacements des individus](Medias/Movement2.png)
+
+# 03.04.2021
+- Pour le travail de diplôme, ajouter des chauffeurs de bus.
+- Bug
+  - Les voitures s'arrête au milieux du trajet. (Elles semblent ne pas aller assez vite alors que les données (position, vitesse, destination) sont correctes)
+  - Les timers en sont la cause.
+    - Le timer d'animation n'a pas le temps d'effectuer ses 60 frames avant que le second timer n'effectue le changement de periods
+    - L'interval est en int --> impossible d'aller assez rapidement et précisement
+    - Erreur --> actuellement ~~60 fps~~ mais 60 images par periodes
+    - ![Calcul de l'interval du timer d'animation](Medias/Timer.png)
+  - Problèmes de timer et voitures réglé !

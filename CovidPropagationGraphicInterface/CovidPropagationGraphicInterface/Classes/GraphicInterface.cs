@@ -60,6 +60,9 @@ namespace CovidPropagationGraphicInterface
         {
             TimeManager.NextPeriod();
             persons.ForEach(x => x.ChangeDestination());
+
+            Console.WriteLine("______________________________________________________");
+            iT = 0;
         }
 
         public void AnimationOnTick(object sender, EventArgs e)
@@ -67,9 +70,15 @@ namespace CovidPropagationGraphicInterface
             if (HasStarted)
             {
                 persons.ForEach(x => x.GoToLocation());
-                //vehicles.ForEach(x => x.TeleportToLocation());
+                Test();
                 Invalidate(true);
             }
+        }
+        int iT = 0;
+        private void Test()
+        {
+            iT++;
+            Console.WriteLine(iT);
         }
 
         public void TimerStart()

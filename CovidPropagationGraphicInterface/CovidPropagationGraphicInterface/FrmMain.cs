@@ -22,10 +22,11 @@ namespace CovidPropagationGraphicInterface
         {
             InitializeComponent();
             timer.Tick += new EventHandler(graphicInterface.OnTick);
+            timer.Interval = Constant.TIMER_INTERVAL;
             TimeManager.Init();
             dummyBuilding = GenerateDummyBuildings(20);
-            dummyVehicle = GenerateDummyVehicle(5);
-            dummyPersons = GenerateDummyPersons(5);
+            dummyVehicle = GenerateDummyVehicle(1);
+            dummyPersons = GenerateDummyPersons(1);
             graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle);
         }
 

@@ -38,6 +38,29 @@ namespace CovidPropagationGraphicInterface.Classes
                 }
             }
         }
+        public static int[] GetNextPeriod()
+        {
+            int tempCurrentPeriod = currentPeriod;
+            int tempCurrentDay = currentDay;
+            if (tempCurrentPeriod < Constant.NUMBER_OF_PERIODS - 1)
+            {
+                tempCurrentPeriod++;
+            }
+            else
+            {
+                tempCurrentPeriod = 0;
+                if (tempCurrentDay < Constant.NUMBER_OF_DAY - 1)
+                {
+                    tempCurrentDay++;
+                }
+                else
+                {
+                    tempCurrentDay = 0;
+                }
+            }
+
+            return new int[] { tempCurrentDay, tempCurrentPeriod };
+        }
 
         private static string GetTime()
         {
