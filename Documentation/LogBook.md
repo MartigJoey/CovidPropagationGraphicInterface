@@ -119,3 +119,13 @@
     - Erreur --> actuellement ~~60 fps~~ mais 60 images par periodes
     - ![Calcul de l'interval du timer d'animation](Medias/Timer.png)
   - Problèmes de timer et voitures réglé !
+
+# 04.04.2021
+- Réglage d'un bug qui permettait aux objets en mouvements de se déplacer plus loins que prévu.
+  - Le timer itérait parfois 64 fois par seconde alors que les objets calcuilait leur vitesse pour bouger 60 fois. Ils se déplaçait donc trop loins 4 fois.
+- Positionnement des batiments
+  - Bug. Les batiments se placenent correctement en théorie mais sont déplacé en 0;0 sans raison connue.
+  - Modification du code dans PositioningBuildings()  Foreach + Switch --> Linq
+  - Positionnement dynamique en fonction du nombre de batiments de chaque type
+  - ![Positionnement des bâtiments](Medias/BuildingPositionnement.png)
+  - Refactorisation

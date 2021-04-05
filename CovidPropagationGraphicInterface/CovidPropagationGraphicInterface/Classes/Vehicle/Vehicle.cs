@@ -19,7 +19,6 @@ namespace CovidPropagationGraphicInterface
         protected int _maxPersons;
         private float _movementX;
         private float _movementY;
-
         public PointF Location { get => _location; }
         public PointF Inside // A modifier pour intégrer un système de "siège" / places fixes limitées.
         {

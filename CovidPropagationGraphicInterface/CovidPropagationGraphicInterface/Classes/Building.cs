@@ -15,22 +15,27 @@ namespace CovidPropagationGraphicInterface
         private Point _location;
         private Size _size;
         private Pen _color;
+        private BuildingType _type;
 
-        public PointF Location { get => _location; }
+        public PointF Location { get => _location; set => _location = Point.Round(value); }
         public PointF Inside { get => new Point(
                                         rdm.Next(_location.X + Constant.PERSON_SIZE.Width, _location.X + _size.Width - Constant.PERSON_SIZE.Width),
                                         rdm.Next(_location.Y + Constant.PERSON_SIZE.Height, _location.Y + _size.Height - Constant.PERSON_SIZE.Height)
                                     ); 
         }
         public Size Size { get => _size; }
+        internal BuildingType Type { get => _type; set => _type = value; }
 
-        public Building(Point location, Size size, BuildingType type)
+        public Building(Size size, BuildingType type)
         {
-            this._location = location;
-            this._size = size;
+            _size = size;
+            Type = type;
 
-            switch (type)
+            switch (Type)
             {
+                case BuildingType.Home:
+                    _color = Pens.Blue;
+                    break;
                 case BuildingType.School:
                     _color = Pens.Beige;
                     break;

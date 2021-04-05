@@ -64,7 +64,7 @@ namespace CovidPropagationGraphicInterface
             // 
             this.graphicInterface.Location = new System.Drawing.Point(12, 32);
             this.graphicInterface.Name = "graphicInterface";
-            this.graphicInterface.Size = new System.Drawing.Size(776, 406);
+            this.graphicInterface.Size = new System.Drawing.Size(899, 543);
             this.graphicInterface.TabIndex = 0;
             this.graphicInterface.Text = "graphicInterface";
             // 
@@ -72,7 +72,7 @@ namespace CovidPropagationGraphicInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(923, 587);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.graphicInterface);

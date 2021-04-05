@@ -16,6 +16,7 @@ namespace CovidPropagationGraphicInterface
         List<Vehicle> vehicles;
 
         Clock clock;
+        int _currentAnimationPerPeriod; // Nombre de mouvements effectué durant une periode
 
         Bitmap bmp = null;
         Graphics g = null;
@@ -23,11 +24,12 @@ namespace CovidPropagationGraphicInterface
         public GraphicInterface()
         {
             DoubleBuffered = true;
-            clock = new Clock(new Point(10,10));
+            clock = new Clock(new Point(750, 10));
             Paint += clock.Paint;
             animationTimer = new Timer();
             animationTimer.Tick += new EventHandler(AnimationOnTick);
             animationTimer.Interval = Constant.ANIMATION_TIMER_INTERVAL;
+            _currentAnimationPerPeriod = 0;
         }
 
         internal bool HasStarted { get => persons != null; }
@@ -37,9 +39,10 @@ namespace CovidPropagationGraphicInterface
             this.persons = persons;
             this.buildings = buildings;
             this.vehicles = vehicles;
-            persons.ForEach(x => { Paint += x.Paint; Paint += x.Trajectory.Paint ; x.TeleportToLocation(); } );
-            buildings.ForEach(x => Paint += x.Paint);
-            vehicles.ForEach(x => Paint += x.Paint);
+            this.persons.ForEach(x => { Paint += x.Paint; Paint += x.Trajectory.Paint; x.TeleportToLocation(); } );
+            this.buildings.ForEach(x => Paint += x.Paint);
+            this.vehicles.ForEach(x => Paint += x.Paint);
+            PositioningBuildings();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -60,25 +63,21 @@ namespace CovidPropagationGraphicInterface
         {
             TimeManager.NextPeriod();
             persons.ForEach(x => x.ChangeDestination());
-
-            Console.WriteLine("______________________________________________________");
-            iT = 0;
+            _currentAnimationPerPeriod = 0;
         }
 
         public void AnimationOnTick(object sender, EventArgs e)
         {
             if (HasStarted)
             {
-                persons.ForEach(x => x.GoToLocation());
-                Test();
+                if (_currentAnimationPerPeriod < Constant.ANIMATION_PER_PERIOD)
+                {
+                    persons.ForEach(x => x.GoToLocation());
+                    _currentAnimationPerPeriod++;
+                }
+
                 Invalidate(true);
             }
-        }
-        int iT = 0;
-        private void Test()
-        {
-            iT++;
-            Console.WriteLine(iT);
         }
 
         public void TimerStart()
@@ -91,7 +90,100 @@ namespace CovidPropagationGraphicInterface
             animationTimer.Enabled = false;
         }
 
-        // méthode de positionnement des batiments
+        private void PositioningBuildings()
+        {
+            List<Building> topRow = new List<Building>();       int trInitialX = 60, trInitialY = 10, trSpace = 10;
+                                                                                          
+            List<Building> leftColumn = new List<Building>();   int lcInitialX = 10, lcInitialY = 60, lcSpace = 10;
+            List<Building> rightColumn = new List<Building>();  int rcInitialX = 00, rcInitialY = 60, rcSpace = 10;
+
+            List<Building> bottomRow = new List<Building>();    int brInitialX = 60, brInitialY = 00, brSpace = 10;
+
+            topRow = (from building in buildings
+                      where building.Type == BuildingType.Home
+                      select building).ToList();
+
+            leftColumn = (from building in buildings
+                          where building.Type == BuildingType.Restaurant || building.Type == BuildingType.Supermarket
+                          select building).ToList();
+
+            rightColumn = (from building in buildings
+                           where building.Type == BuildingType.Hospital || building.Type == BuildingType.School
+                           select building).ToList();
+
+            bottomRow = (from building in buildings
+                         where building.Type == BuildingType.Company
+                         select building).ToList();
+
+            // Rows space
+            if (topRow.Count > bottomRow.Count)
+            {
+                brSpace = CalculateSpace(topRow.Count, topRow[0].Size.Width, trSpace,
+                               bottomRow.Count, bottomRow[0].Size.Width, brSpace);
+            }
+            else
+            {
+                trSpace = CalculateSpace(bottomRow.Count, bottomRow[0].Size.Width, brSpace,
+                               topRow.Count, topRow[0].Size.Width, trSpace);
+            }
+
+            // Columns space
+            if (leftColumn.Count > rightColumn.Count)
+            {
+                rcSpace = CalculateSpace(leftColumn.Count, leftColumn[0].Size.Height, lcSpace,
+                               rightColumn.Count, rightColumn[0].Size.Height, rcSpace);
+            }
+            else
+            {
+                lcSpace = CalculateSpace(rightColumn.Count, rightColumn[0].Size.Height, rcSpace,
+                               leftColumn.Count, leftColumn[0].Size.Height, lcSpace);
+            }
+
+            Building trPrev = null;
+            trPrev = PositioningBuilding(trPrev, topRow, trInitialX, trInitialY, trSpace, true);
+
+            Building lcPrev = null;
+            lcPrev = PositioningBuilding(lcPrev, leftColumn, lcInitialX, lcInitialY, lcSpace, false);
+
+            Building rcPrev = null;
+            rcInitialX = (int)trPrev.Location.X + trPrev.Size.Width;
+            rcPrev = PositioningBuilding(rcPrev, rightColumn, rcInitialX, rcInitialY, rcSpace, false);
+
+            Building brPrev = null;
+            brInitialY = (int)lcPrev.Location.Y + lcPrev.Size.Height;
+            brPrev = PositioningBuilding(brPrev, bottomRow, brInitialX, brInitialY, brSpace, true);
+        }
+
+        private int CalculateSpace(int count1, int elementSize1, int space1, 
+                                   int count2, int elementSize2, int space2)
+        {
+            int space;
+
+            int size1 = count1 * elementSize1 + space1 * count1 - space1;
+            int size2 = count2 * elementSize2 + space2 * count2 - space2;
+
+            int sizeDifference = size1 - size2;
+            space = space2 + sizeDifference / (count2 - 1);
+
+            return space;
+        }
+
+        private Building PositioningBuilding(Building prev, List<Building> buildings, int initialX, int initialY, int space, bool isRow)
+        {
+            buildings.ForEach(b => {
+                int x = initialX;
+                int y = initialY;
+
+                if (isRow)
+                    x = prev == null ? initialX : (int)prev.Location.X + b.Size.Width + space;
+                else
+                    y = prev == null ? initialY : (int)prev.Location.Y + b.Size.Height + space;
+
+                b.Location = new Point(x, y);
+                prev = b;
+            });
+            return prev;
+        }
 
         // méthode de modification de la taille des batiments, véhicules et individus en fonction du nombre d'éléments.
     }

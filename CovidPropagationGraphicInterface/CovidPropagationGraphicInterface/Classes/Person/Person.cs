@@ -23,7 +23,7 @@ namespace CovidPropagationGraphicInterface
 
         internal Trajectory Trajectory { get => _trajectory; }
 
-        public Person(Planning planning, Vehicle vehicle)
+        public Person(Planning planning)
         {
             this._planning = planning;
             _color = Brushes.Blue;

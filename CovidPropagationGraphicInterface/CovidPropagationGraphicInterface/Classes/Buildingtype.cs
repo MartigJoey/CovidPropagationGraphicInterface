@@ -10,6 +10,7 @@ namespace CovidPropagationGraphicInterface
     {
         School,
         Hospital,
+        Home,
         Company,
         Supermarket,
         Restaurant
