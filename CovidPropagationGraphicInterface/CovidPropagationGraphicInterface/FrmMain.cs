@@ -17,17 +17,21 @@ namespace CovidPropagationGraphicInterface
         List<Person> dummyPersons;
         List<Building> dummyBuilding;
         List<Vehicle> dummyVehicle;
+        List<Bus> dummyBus;
+
+        State testChange;
 
         public FrmMain()
         {
             InitializeComponent();
             timer.Tick += new EventHandler(graphicInterface.OnTick);
-            timer.Interval = Constant.TIMER_INTERVAL;
+            timer.Interval = GlobalVariables.TIMER_INTERVAL;
             TimeManager.Init();
             dummyBuilding = GenerateDummyBuildings();
-            dummyVehicle = GenerateDummyVehicle(5);
-            dummyPersons = GenerateDummyPersons(5);
-            graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle);
+            dummyVehicle = GenerateDummyVehicle(31);
+            dummyPersons = GenerateDummyPersons(31);
+            dummyBus = GenerateDummyBus();
+            graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle, dummyBus);
         }
 
         private void Start_Click(object sender, EventArgs e)
@@ -39,6 +43,7 @@ namespace CovidPropagationGraphicInterface
         private void Stop_Click(object sender, EventArgs e)
         {
             timer.Enabled = false;
+            testChange.CurrentState = PersonState.Infected;
             graphicInterface.TimerStop();
         }
 
@@ -52,17 +57,17 @@ namespace CovidPropagationGraphicInterface
         {
             List<Building> buildings = new List<Building>();
             buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(30, 30), BuildingType.Home));
-            buildings.Add(new Building(new Size(30, 30), BuildingType.Home));
-            buildings.Add(new Building(new Size(30, 30), BuildingType.Home));
-            buildings.Add(new Building(new Size(30, 30), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
 
             buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
             buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
 
-            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
 
             buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
             buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
@@ -94,7 +99,8 @@ namespace CovidPropagationGraphicInterface
             List<Person> persons = new List<Person>();
             for (int i = 0; i < quantity; i++)
             {
-                persons.Add(CreatePerson(rdm, i));
+                Person person = CreatePerson(rdm, i);
+                persons.Add(person);
             }
 
             return persons;
@@ -106,38 +112,38 @@ namespace CovidPropagationGraphicInterface
         /// </summary>
         private Person CreatePerson(Random rdm, int personIndex)
         {
-            Classes.Person.Day[] day = new Classes.Person.Day[Constant.NUMBER_OF_DAY];
+            Classes.Person.Day[] day = new Classes.Person.Day[GlobalVariables.NUMBER_OF_DAY];
 
-            int nbBuilding = dummyBuilding.Count - 1;
+            int nbBuilding = dummyBuilding.CountFromZero();
             Building firstactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
             Building secondactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
             Building thirdactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
-            for (int i = 0; i < Constant.NUMBER_OF_DAY; i++)
+            for (int i = 0; i < GlobalVariables.NUMBER_OF_DAY; i++)
             {
-                Period[] period = new Period[Constant.NUMBER_OF_PERIODS];
-                for (int j = 0; j < Constant.NUMBER_OF_PERIODS; j++)
+                Period[] period = new Period[GlobalVariables.NUMBER_OF_PERIODS];
+                for (int j = 0; j < GlobalVariables.NUMBER_OF_PERIODS; j++)
                 {
-                    if (j < Constant.NUMBER_OF_PERIODS / 3)
+                    if (j < GlobalVariables.NUMBER_OF_PERIODS / 3)
                     {
                         period[j] = new Period(firstactivity);
-                    }else if (j < (Constant.NUMBER_OF_PERIODS / 3) * 2)
+                    }else if (j < (GlobalVariables.NUMBER_OF_PERIODS / 3) * 2)
                     {
                         period[j] = new Period(secondactivity);
-                    }else if (j < Constant.NUMBER_OF_PERIODS)
+                    }else if (j < GlobalVariables.NUMBER_OF_PERIODS)
                     {
                         period[j] = new Period(thirdactivity);
                     }
 
                     Vehicle travelCar = dummyVehicle[personIndex];
-                    if (j == Constant.NUMBER_OF_PERIODS / 3)
+                    if (j == GlobalVariables.NUMBER_OF_PERIODS / 3)
                     {
                         period[j] = new Period(travelCar);
                     }
-                    else if (j == (Constant.NUMBER_OF_PERIODS / 3) * 2)
+                    else if (j == (GlobalVariables.NUMBER_OF_PERIODS / 3) * 2)
                     {
                         period[j] = new Period(travelCar);
                     }
-                    else if (j == Constant.NUMBER_OF_PERIODS-1)
+                    else if (j == GlobalVariables.NUMBER_OF_PERIODS-1)
                     {
                         period[j] = new Period(travelCar);
                     }
@@ -145,7 +151,8 @@ namespace CovidPropagationGraphicInterface
                 day[i] = new Classes.Person.Day(period);
             }
             Planning planning = new Planning(day);
-            return new Person(planning);
+            testChange = new State();
+            return new Person(planning, testChange);
         }
 
         /// <summary>
@@ -160,6 +167,11 @@ namespace CovidPropagationGraphicInterface
                 vehicles.Add(new Car());
             }
             return vehicles;
+        }
+
+        private List<Bus> GenerateDummyBus()
+        {
+            return new List<Bus>();
         }
     }
 }

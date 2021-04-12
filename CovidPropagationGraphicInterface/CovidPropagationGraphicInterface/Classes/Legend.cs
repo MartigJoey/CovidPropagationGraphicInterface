@@ -28,27 +28,27 @@ namespace CovidPropagationGraphicInterface.Classes
             _location = location;
             stringBrush = new SolidBrush(Color.Black);
             stringFont = new Font("Arial", 14);
-            buildingsSize = Constant.DEFAULT_BUILDING_SIZE;
-            personsSize = Constant.PERSON_SIZE;
-            vehiclesSize = Constant.CAR_SIZE;
+            buildingsSize = GlobalVariables.DEFAULT_BUILDING_SIZE;
+            personsSize = GlobalVariables.person_Size;
+            vehiclesSize = GlobalVariables.car_Size;
             elementLocation = _location;
 
             buildings = new List<KeyValuePair<string, Pen>>();
-            buildings.Add(new KeyValuePair<string, Pen>("Home", Constant.HOME_PEN_COLOR));
-            buildings.Add(new KeyValuePair<string, Pen>("School", Constant.SCHOOL_PEN_COLOR));
-            buildings.Add(new KeyValuePair<string, Pen>("Hospital", Constant.HOSPITAL_PEN_COLOR));
-            buildings.Add(new KeyValuePair<string, Pen>("Company", Constant.COMPANY_PEN_COLOR));
-            buildings.Add(new KeyValuePair<string, Pen>("Supermarket", Constant.SUPERMARKET_PEN_COLOR));
-            buildings.Add(new KeyValuePair<string, Pen>("Restaurant", Constant.RESTAURANT_PEN_COLOR));
+            buildings.Add(new KeyValuePair<string, Pen>("Home", GlobalVariables.home_Pen_Color));
+            buildings.Add(new KeyValuePair<string, Pen>("School", GlobalVariables.school_Pen_Color));
+            buildings.Add(new KeyValuePair<string, Pen>("Hospital", GlobalVariables.hospital_Pen_Color));
+            buildings.Add(new KeyValuePair<string, Pen>("Company", GlobalVariables.company_Pen_Color));
+            buildings.Add(new KeyValuePair<string, Pen>("Supermarket", GlobalVariables.supermarket_Pen_Color));
+            buildings.Add(new KeyValuePair<string, Pen>("Restaurant", GlobalVariables.restaurant_Pen_Color));
 
             vehicles = new List<KeyValuePair<string, Pen>>();
-            vehicles.Add(new KeyValuePair<string, Pen>("Car", Constant.CAR_PEN_COLOR));
-            vehicles.Add(new KeyValuePair<string, Pen>("Bus", Constant.BUS_PEN_COLOR));
+            vehicles.Add(new KeyValuePair<string, Pen>("Car", GlobalVariables.car_Pen));
+            vehicles.Add(new KeyValuePair<string, Pen>("Bus", GlobalVariables.bus_Pen));
 
             persons = new List<KeyValuePair<string, Brush>>();
-            persons.Add(new KeyValuePair<string, Brush>("Person", Constant.SANE_PERSON_BRUSH_COLOR));
-            persons.Add(new KeyValuePair<string, Brush>("Person", Constant.IMMUNE_PERSON_BRUSH_COLOR));
-            persons.Add(new KeyValuePair<string, Brush>("Person", Constant.INFECTED_PERSON_BRUSH_COLOR));
+            persons.Add(new KeyValuePair<string, Brush>("Healthy person", GlobalVariables.healthy_Person_Brush));
+            persons.Add(new KeyValuePair<string, Brush>("Asymptomatic Person", GlobalVariables.Asymptomatic_Person_Brush));
+            persons.Add(new KeyValuePair<string, Brush>("Infected person", GlobalVariables.Infected_Person_Brush));
         }
 
         public void Paint(object sender, PaintEventArgs e)

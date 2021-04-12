@@ -20,19 +20,21 @@ namespace CovidPropagationGraphicInterface
         private Brush _color;
         private float _movementX;
         private float _movementY;
+        private State _state;
 
         internal Trajectory Trajectory { get => _trajectory; }
 
-        public Person(Planning planning)
+        public Person(Planning planning, State state)
         {
-            this._planning = planning;
-            _color = Constant.SANE_PERSON_BRUSH_COLOR;
-            _size = Constant.PERSON_SIZE;
+            _planning = planning;
+            _state = state;
+            _color = GlobalVariables.healthy_Person_Brush;
+            _size = GlobalVariables.person_Size;
             _trajectory = new Trajectory();
             TeleportToLocation();
         }
 
-        public void ChangeDestination()
+        public void ChangeActivity()
         {
             _destination = _planning.Location;
             switch (_planning.GetActivity())
@@ -41,7 +43,7 @@ namespace CovidPropagationGraphicInterface
                     PointF carDestination = _planning.NextLocation;
                     car.TeleportToLocation(_location);
                     car.SetDestination(carDestination);
-                    TeleportToLocation(car.Inside);// Remplacer par un déplacement
+                    TeleportToLocation(car.Inside); // Remplacer par un déplacement
                     _trajectory.Enabled = true;
                     _trajectory.SetTrajectory(_location, carDestination);
                     break;
@@ -81,8 +83,8 @@ namespace CovidPropagationGraphicInterface
             distanceX = _destination.X < _location.X ? distanceX * -1 : distanceX;
             distanceY = _destination.Y < _location.Y ? distanceY * -1 : distanceY;
 
-            _movementX = distanceX / Constant.ANIMATION_PER_PERIOD;
-            _movementY = distanceY / Constant.ANIMATION_PER_PERIOD;
+            _movementX = distanceX / GlobalVariables.ANIMATION_PER_PERIOD;
+            _movementY = distanceY / GlobalVariables.ANIMATION_PER_PERIOD;
         }
 
         public void TeleportToLocation(PointF destination)
@@ -100,6 +102,20 @@ namespace CovidPropagationGraphicInterface
 
         public void Paint(object sender, PaintEventArgs e)
         {
+            switch (_state.CurrentState)
+            {
+                default:
+                case PersonState.Healthy:
+                    _color = GlobalVariables.healthy_Person_Brush;
+                    break;
+                case PersonState.Infected:
+                    _color = GlobalVariables.Infected_Person_Brush;
+                    break;
+                case PersonState.Asymptomatic:
+                    _color = GlobalVariables.Asymptomatic_Person_Brush;
+                    break;
+            }
+
             e.Graphics.FillPie(_color, new Rectangle(Point.Round(_location), _size), 0f, 360f);
         }
     }

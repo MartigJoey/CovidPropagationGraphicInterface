@@ -9,6 +9,7 @@ namespace CovidPropagationGraphicInterface
         private PointF _pointB;
         private Pen _pen;
         private bool _enabled;
+        public static bool globalEnabled = true;
         public bool Enabled { get => _enabled; set => _enabled = value; }
 
         public Trajectory()
@@ -25,7 +26,7 @@ namespace CovidPropagationGraphicInterface
 
         public void Paint(object sender, PaintEventArgs e)
         {
-            if (Enabled)
+            if (Enabled && globalEnabled)
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 e.Graphics.DrawLine(_pen, _pointA, _pointB);

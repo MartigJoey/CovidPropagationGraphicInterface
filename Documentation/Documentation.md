@@ -5,6 +5,7 @@
   - [`Structure`](#structure)
   - [`Timer`](#timer)
   - [`Création de fausses données`](#création-de-fausses-données)
+  - [`Bus`](#bus)
 - [3. `Cahier des charges`](#3-cahier-des-charges)
   - [3.1. `Titre`](#31-titre)
   - [3.2. `Fonctionnalités`](#32-fonctionnalités)
@@ -33,7 +34,9 @@ Ce projet de stage consiste à la réalisation de l'interface graphique du trava
 
 Ce travail est très important pour le travail de diplôme car il en fait parti mais surtout car il permet de facilement se rendre compte si la simulation se déroule correctement ou si il y a un ou plusieurs bug. Il permet donc d'améliorer mon rendement et de rendre le développement plus rapide et efficace.
 
-Pour réaliser se travail, il faudra que je simule des données d'individus. Pour fonctionner, l'interface à besoin de données mais ces données n'étant pas encore créées, je vais devoir en générer des fausses.
+Pour réaliser se travail, il faudra que je simule des données d'individus. Pour fonctionner, l'interface à besoin de données mais ces données n'étant pas encore créées, je vais devoir en générer des fausses qui seront par la suite supprimées.
+
+Ce travail a pour but de remplacer les stages de techniciens qui devaient avoir lieu en première année (2019-2020) mais qui ont été annulé dut à la pandémie. Il doit contenir un rapport similaire et doit représenter une charge de travail correspondant au stage. Il dure du mardi 06 avril au jeudi 15 avril, 6 jours sans compter les vacances, en comptant 8 heures de travail par jour soit 48 heures de travail au total.
 
 # `Problèmes rencontrés`
 ## `Structure`
@@ -44,6 +47,14 @@ L'emplacement du timer ou simplement leur utilité dans le code a apporté quelq
 
 ## `Création de fausses données`
 La création de ces données est nécessaire pour avoir quelque chose à afficher. Elle est très rustre car justement destinée à être supprimer dans le futur. Elle peut poser des problèmes en terme de création des planning. Une erreur d'assignation ou de valeur peut rapidement donner des résultats étonnants. Il reste malgré tout très simple et rapide de modifier le code pour palier à ces problèmes.
+
+## `Bus`
+Sans compter le code qui est l'une des partie les plus complexe du projet, créer une structure viable en terme de planning des individus et de lisibilité est un énorme challenge. J'y ai beaucoup réflechis et suis passé par de nombreux plan avant de trouver une méthode qui me semble réellement viable.
+<h1>Parler des idées 1-2-3</h1>
+
+Pour finir, J'en suis arrivé à la conclusion qu'un mixe entre interne et externe semble être le plus efficace. Avec cette structure, un individus peut se rendre n'importe ou en une seule période. Les bus au centre ajoutent du traffique mais rien de trop chargé comparé aux autres idée.
+
+![Idée des bus 1](/Documentation/Medias/Bus4.png)
 
 # 3. `Cahier des charges`
 ## 3.1. `Titre`

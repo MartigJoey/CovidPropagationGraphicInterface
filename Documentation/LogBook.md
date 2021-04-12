@@ -157,3 +157,38 @@
     - ![Troisième idée de structure des bus Exterieur](Medias/Bus3.png)
 - Ajout d'une légende
   - ![Légende de l'interface graphique](Medias/Legend.png)
+# 12.04.2021
+- Oubli de push une partie du travail effectué durant les vacances
+  - Futur problèmes de conflits avec git prévu dans le code et logbook
+- Implémentation du Status des individus
+  - Les pointeurs de variables simple tel que les enums ne pouvant être utilisé uniquement en mode unsafe, création d'un objet simple contenant l'état
+  - Le but étant que les personnes de la simulation et de l'interface graphique pointent sur le même état et qu'en cas de modification de la simulation, l'interface change automatiquement.
+- Modification de la structure de la classe véhicule pour intégrer les bus
+  - Déplacements de méthodes de la classe parent à la classe voiture
+- Modification de la trajectoire pour l'afficher uniquement si il y a peu d'individus
+- Vehicules
+  - Les voitures ne s'affichent qu'en cas de déplacements
+  - Reflection sur les bus. L'idée actuelle est bonne mais risque de restraindre la simulation en terme de planning.
+    - Essayer de simplifier encore pour n'avoir qu'une seule ligne de bus qui fait le tour des batiments
+    - Problème similaire. Si les bus vont trop vite, ce n'est pas lisible. S'ils vont trop lentement, Risque de téléportation et incohérence
+    - Idée final permettant le déplacement des individus de manière optimal tout en limitant le traffique au centre.
+    - ![Idée final sur la structure des bus](Medias/Bus4.png)
+    - Ajouter des arrêts de bus ? 1 par ligne/colonne
+      - +Permet un affichage plus propre et vivant
+      - -Encore plus difficile à mettre en place
+- Ajout d'une extension de liste permettant de compter le nombre d'élément dans la liste en partant de 0. ( évitant donc de faire list.Count - 1 )
+- Création des bus
+  - Première itération.
+    - Création des lignes de bus puis positionnement des bus. Une fois lançé, les bus se déplacent en boucle sur leur ligne.
+    - Probable futur problème pour cloner les bus de la simulation pour l'interface graphique.
+    - Tentative de rotation des bus. Impossible avec C#. La rotation tourne l'entièreté de l'interface.
+    - Essai de rotation en interchangeant largeur et hauteur.
+    - Les bus en intérieur sont fonctionnel.
+      - Pour le moment ils ne prennent pas en compte les individus qui entrent / sortent
+    - Ligne des bus exterieure effectué au même niveau que les bus intérieurs
+  - Possible problème au niveau de l'entrée des personnes dans les bus
+    - Solutions :
+      - ~~Revoir la structure~~
+      - ~~Allonger les trajet en bus pour qu'ils durent 2 périodes~~
+      - Créer un système d'arrêt de bus qui ne dépend pas des période
+        - Reprend la logique du planning --> jour --> période mais en simplifié

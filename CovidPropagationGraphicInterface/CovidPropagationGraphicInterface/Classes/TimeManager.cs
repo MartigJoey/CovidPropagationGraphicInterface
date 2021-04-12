@@ -21,14 +21,14 @@ namespace CovidPropagationGraphicInterface.Classes
 
         public static void NextPeriod()
         {
-            if (currentPeriod < Constant.NUMBER_OF_PERIODS-1)
+            if (currentPeriod < GlobalVariables.NUMBER_OF_PERIODS-1)
             {
                 currentPeriod++;
             }
             else
             {
                 currentPeriod = 0;
-                if (currentDay < Constant.NUMBER_OF_DAY-1)
+                if (currentDay < GlobalVariables.NUMBER_OF_DAY-1)
                 {
                     currentDay++;
                 }
@@ -42,14 +42,14 @@ namespace CovidPropagationGraphicInterface.Classes
         {
             int tempCurrentPeriod = currentPeriod;
             int tempCurrentDay = currentDay;
-            if (tempCurrentPeriod < Constant.NUMBER_OF_PERIODS - 1)
+            if (tempCurrentPeriod < GlobalVariables.NUMBER_OF_PERIODS - 1)
             {
                 tempCurrentPeriod++;
             }
             else
             {
                 tempCurrentPeriod = 0;
-                if (tempCurrentDay < Constant.NUMBER_OF_DAY - 1)
+                if (tempCurrentDay < GlobalVariables.NUMBER_OF_DAY - 1)
                 {
                     tempCurrentDay++;
                 }
@@ -64,7 +64,7 @@ namespace CovidPropagationGraphicInterface.Classes
 
         private static string GetTime()
         {
-            float time = currentPeriod * Constant.TIME_OF_PERIOD / 60f;
+            float time = currentPeriod * GlobalVariables.TIME_OF_PERIOD / 60f;
             int hours = (int)Math.Truncate(time);
             int minutes = (int)((time - hours) * 60);
             return $"{hours.ToString("00")}:{minutes.ToString("00")}";

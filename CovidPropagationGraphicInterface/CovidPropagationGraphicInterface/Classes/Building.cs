@@ -19,8 +19,8 @@ namespace CovidPropagationGraphicInterface
 
         public PointF Location { get => _location; set => _location = Point.Round(value); }
         public PointF Inside { get => new Point(
-                                        rdm.Next(_location.X + Constant.PERSON_SIZE.Width, _location.X + _size.Width - Constant.PERSON_SIZE.Width),
-                                        rdm.Next(_location.Y + Constant.PERSON_SIZE.Height, _location.Y + _size.Height - Constant.PERSON_SIZE.Height)
+                                        rdm.Next(_location.X + GlobalVariables.person_Size.Width, _location.X + _size.Width - GlobalVariables.person_Size.Width),
+                                        rdm.Next(_location.Y + GlobalVariables.person_Size.Height, _location.Y + _size.Height - GlobalVariables.person_Size.Height)
                                     ); 
         }
         public Size Size { get => _size; }
@@ -33,25 +33,24 @@ namespace CovidPropagationGraphicInterface
 
             switch (Type)
             {
+                default:
                 case BuildingType.Home:
-                    _color = Constant.HOME_PEN_COLOR;
+                    _color = GlobalVariables.home_Pen_Color;
                     break;
                 case BuildingType.School:
-                    _color = Constant.SCHOOL_PEN_COLOR;
+                    _color = GlobalVariables.school_Pen_Color;
                     break;
                 case BuildingType.Hospital:
-                    _color = Constant.HOSPITAL_PEN_COLOR;
+                    _color = GlobalVariables.hospital_Pen_Color;
                     break;
                 case BuildingType.Company:
-                    _color = Constant.COMPANY_PEN_COLOR;
+                    _color = GlobalVariables.company_Pen_Color;
                     break;
                 case BuildingType.Supermarket:
-                    _color = Constant.SUPERMARKET_PEN_COLOR;
+                    _color = GlobalVariables.supermarket_Pen_Color;
                     break;
                 case BuildingType.Restaurant:
-                    _color = Constant.RESTAURANT_PEN_COLOR;
-                    break;
-                default:
+                    _color = GlobalVariables.restaurant_Pen_Color;
                     break;
             }
         }

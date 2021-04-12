@@ -14,22 +14,22 @@ namespace CovidPropagationGraphicInterface
         protected Random rdm = new Random();
         protected PointF _location;
         protected Size _size;
-        private PointF _destination;
+        protected PointF _destination;
         protected Pen _color;
         protected int _maxPersons;
-        private float _movementX;
-        private float _movementY;
+        protected float _movementX;
+        protected float _movementY;
         public PointF Location { get => _location; }
         public PointF Inside // A modifier pour intégrer un système de "siège" / places fixes limitées.
         {
             get => new Point(
-                      rdm.Next((int)_location.X + Constant.PERSON_SIZE.Width, (int)_location.X + _size.Width - Constant.PERSON_SIZE.Width),
-                      rdm.Next((int)_location.Y + Constant.PERSON_SIZE.Height, (int)_location.Y + _size.Height - Constant.PERSON_SIZE.Height)
+                      rdm.Next((int)_location.X + GlobalVariables.person_Size.Width, (int)_location.X + _size.Width - GlobalVariables.person_Size.Width),
+                      rdm.Next((int)_location.Y + GlobalVariables.person_Size.Height, (int)_location.Y + _size.Height - GlobalVariables.person_Size.Height)
                   );
         }
         public Size Size { get => _size; }
 
-        public Vehicle(Point location, Size size, int maxPerson, Pen color)
+        public Vehicle(PointF location, Size size, int maxPerson, Pen color)
         {
             _location = location;
             _size = size;
@@ -42,19 +42,19 @@ namespace CovidPropagationGraphicInterface
             _location = destination;
         }
 
-        public void SetDestination(PointF destination)
+        public virtual void SetDestination(PointF destination)
         {
             _destination = destination; 
             CalculateMovementSpeed();
         }
 
-        public void GoToLocation()
+        public virtual void GoToLocation()
         {
             _location.X += _movementX;
             _location.Y += _movementY;
         }
 
-        private void CalculateMovementSpeed()
+        protected void CalculateMovementSpeed()
         {
             float distanceX, distanceY;
 
@@ -64,16 +64,11 @@ namespace CovidPropagationGraphicInterface
             distanceX = _destination.X < _location.X ? distanceX * -1 : distanceX;
             distanceY = _destination.Y < _location.Y ? distanceY * -1 : distanceY;
 
-            _movementX = distanceX / Constant.ANIMATION_PER_PERIOD;
-            _movementY = distanceY / Constant.ANIMATION_PER_PERIOD;
-            //Console.WriteLine($"Movement {_movementX} {_movementY}");
-            //Console.WriteLine($"Distance {distanceX} {distanceY}");
-            //Console.WriteLine($"Destination {_destination}");
-            //Console.WriteLine($"Location {_location}");
-            //Console.WriteLine("_______________________");
+            _movementX = distanceX / GlobalVariables.ANIMATION_PER_PERIOD;
+            _movementY = distanceY / GlobalVariables.ANIMATION_PER_PERIOD;
         }
 
-        public void Paint(object sender, PaintEventArgs e)
+        public virtual void Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawRectangle(_color, new Rectangle(Point.Round(_location), _size));
         }

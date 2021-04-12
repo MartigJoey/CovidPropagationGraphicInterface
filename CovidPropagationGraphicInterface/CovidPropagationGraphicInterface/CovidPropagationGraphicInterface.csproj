@@ -64,13 +64,16 @@
     <Compile Include="Classes\Activity.cs" />
     <Compile Include="Classes\Building.cs" />
     <Compile Include="Classes\Buildingtype.cs" />
-    <Compile Include="Classes\Constant.cs" />
+    <Compile Include="Classes\GlobalVariables.cs" />
     <Compile Include="Classes\Legend.cs" />
     <Compile Include="Classes\Person\Day.cs" />
     <Compile Include="Classes\Person\Period.cs" />
+    <Compile Include="Classes\Person\PersonState.cs" />
     <Compile Include="Classes\Person\Planning.cs" />
     <Compile Include="Classes\TimeManager.cs" />
     <Compile Include="Classes\Vehicle\Bus.cs" />
+    <Compile Include="Classes\Vehicle\BusLine.cs" />
+    <Compile Include="Classes\Vehicle\BusStop.cs" />
     <Compile Include="Classes\Vehicle\Car.cs" />
     <Compile Include="Classes\Clock.cs" />
     <Compile Include="FrmMain.cs">
@@ -83,6 +86,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Classes\Person\Person.cs" />
+    <Compile Include="ListExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\Person\Trajectory.cs" />
