@@ -71,6 +71,8 @@
     <Compile Include="Classes\Person\Planning.cs" />
     <Compile Include="Classes\TimeManager.cs" />
     <Compile Include="Classes\Vehicle\Bus.cs" />
+    <Compile Include="Classes\Vehicle\BusLine.cs" />
+    <Compile Include="Classes\Vehicle\BusStop.cs" />
     <Compile Include="Classes\Vehicle\Car.cs" />
     <Compile Include="Classes\Clock.cs" />
     <Compile Include="FrmMain.cs">

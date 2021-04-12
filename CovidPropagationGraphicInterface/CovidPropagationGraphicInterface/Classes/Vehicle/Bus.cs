@@ -1,4 +1,5 @@
 ﻿using CovidPropagationGraphicInterface.Classes;
+using CovidPropagationGraphicInterface.Classes.Vehicle;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -7,41 +8,44 @@ namespace CovidPropagationGraphicInterface
 {
     class Bus : Vehicle
     {
-        private List<PointF> _trajectory;
-        private int _trajectoryIndex;
+        private BusLine _busLine;
+        private int _busStopIndex;
+        private int _pointIndex;
         private bool _shouldRotate;
-        public Bus(PointF location, Size size, int maxPerson, Pen color, List<PointF> trajectory, bool _isHorizontal = true) : base(location, size, maxPerson, color)
+
+        public Bus(PointF location, Size size, int maxPerson, Pen color, BusLine busLine, bool _isHorizontal = true) : base(location, size, maxPerson, color)
         {
-            _trajectory = trajectory;
-            _trajectoryIndex = 0;
+            _busLine = busLine;
+            _busStopIndex = 0;
+            _pointIndex = 0;
             _shouldRotate = false;
             if (!_isHorizontal)
                 Rotate();
         }
 
-        public Bus(List<PointF> trajectory, PointF location, bool _isHorizontal = true) : this(location, GlobalVariables.bus_Size, GlobalVariables.BUS_MAX_PERSON, GlobalVariables.bus_Pen, trajectory, _isHorizontal)
-        {
-            _trajectoryIndex = trajectory.FindIndex(x => x.Equals(location));
-        }
-
-        public Bus(List<PointF> trajectory, bool _isHorizontal = true) : this(trajectory[0], GlobalVariables.bus_Size, GlobalVariables.BUS_MAX_PERSON, GlobalVariables.bus_Pen, trajectory, _isHorizontal)
+        public Bus(BusLine busLine, PointF location, bool _isHorizontal = true) : this(location, GlobalVariables.bus_Size, GlobalVariables.BUS_MAX_PERSON, GlobalVariables.bus_Pen, busLine, _isHorizontal)
         {
             // Does nothing
         }
 
-        public void SetLine(List<PointF> trajectory, PointF location)
+        public Bus(BusLine busLine, bool _isHorizontal = true) : this(busLine.GetCurrentStop(0).GetCurrentPoint(0).Key, GlobalVariables.bus_Size, GlobalVariables.BUS_MAX_PERSON, GlobalVariables.bus_Pen, busLine, _isHorizontal)
         {
-            _trajectory = trajectory;
-            _location = location;
-            _trajectoryIndex = _trajectory.FindIndex(x => x.Equals(_location));
+            // Does nothing
         }
 
-        public void NextDestination()
+        public void NextStop()
         {
-            if (++_trajectoryIndex > _trajectory.CountFromZero())
-                _trajectoryIndex = 0;
+            _busStopIndex = _busLine.GetNextStopIndex(_busStopIndex);
+            _pointIndex = 0;
+            _destination = _busLine.GetCurrentStop(_busStopIndex).GetCurrentPoint(_pointIndex).Key;
+            _shouldRotate = true;
+            CalculateMovementSpeed();
+        }
 
-            _destination = _trajectory[_trajectoryIndex];
+        public void NextPoint()
+        {
+            _pointIndex = _busLine.GetCurrentStop(_busStopIndex).GetNextPointIndex(_pointIndex);
+            _destination = _busLine.GetCurrentStop(_busStopIndex).GetCurrentPoint(_pointIndex).Key;
             _shouldRotate = true;
             CalculateMovementSpeed();
         }
@@ -51,6 +55,15 @@ namespace CovidPropagationGraphicInterface
             Size tempSize = _size;
             _size.Width = tempSize.Height;
             _size.Height = tempSize.Width;
+        }
+
+        public override void GoToLocation()
+        {
+            _location.X += _movementX;
+            _location.Y += _movementY;
+
+            if (Point.Round(_location).Equals(Point.Round(_destination)))
+                NextPoint();
         }
 
         public override void Paint(object sender, PaintEventArgs e)

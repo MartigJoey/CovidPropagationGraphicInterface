@@ -159,3 +159,9 @@
     - Les bus en intérieur sont fonctionnel.
       - Pour le moment ils ne prennent pas en compte les individus qui entrent / sortent
     - Ligne des bus exterieure effectué au même niveau que les bus intérieurs
+  - Possible problème au niveau de l'entrée des personnes dans les bus
+    - Solutions :
+      - ~~Revoir la structure~~
+      - ~~Allonger les trajet en bus pour qu'ils durent 2 périodes~~
+      - Créer un système d'arrêt de bus qui ne dépend pas des période
+        - Reprend la logique du planning --> jour --> période mais en simplifié

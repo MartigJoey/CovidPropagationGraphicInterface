@@ -29,9 +29,7 @@ namespace CovidPropagationGraphicInterface
             _location.Y += _movementY;
 
             if (Point.Round(_location).Equals(Point.Round(_destination)))
-            {
                 _isDisplayed = false;
-            }
         }
 
         public override void Paint(object sender, PaintEventArgs e)

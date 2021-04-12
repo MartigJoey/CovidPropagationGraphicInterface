@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using CovidPropagationGraphicInterface.Classes;
+using CovidPropagationGraphicInterface.Classes.Vehicle;
 
 namespace CovidPropagationGraphicInterface
 {
@@ -73,7 +74,7 @@ namespace CovidPropagationGraphicInterface
         {
             TimeManager.NextPeriod();
             persons.ForEach(x => x.ChangeActivity());
-            buses.ForEach(x => x.NextDestination());
+            buses.ForEach(x => x.NextStop());
             _currentAnimationPerPeriod = 0;
         }
 
@@ -217,74 +218,94 @@ namespace CovidPropagationGraphicInterface
         private void CreateBusLines(Point topLeft, Point bottomRight, Point perimtererTopLeft, Point perimtererBottomRight)
         {
             CreateHorizontalBusLine(topLeft.X, bottomRight.X, (topLeft.Y + bottomRight.Y) / 2);
-            CreateVerticalBusLine(topLeft.Y, bottomRight.Y, (topLeft.X + bottomRight.X) / 2);
-            CreatePerimeterBusLine(perimtererTopLeft, perimtererBottomRight);
+            //CreateVerticalBusLine(topLeft.Y, bottomRight.Y, (topLeft.X + bottomRight.X) / 2);
+            //CreatePerimeterBusLine(perimtererTopLeft, perimtererBottomRight);
         }
 
         private void CreateHorizontalBusLine(int xLeft, int xRight, int y) 
         {
-            List<PointF> trajectory = new List<PointF>();
-            trajectory.Add(new PointF(xLeft, y));
-            trajectory.Add(new PointF(xRight - GlobalVariables.bus_Size.Width, y));
-            trajectory.Add(new PointF(xRight - GlobalVariables.bus_Size.Width, y + GlobalVariables.bus_Size.Width));
-            trajectory.Add(new PointF(xLeft, y + GlobalVariables.bus_Size.Width));
-            Bus busOne = new Bus(trajectory, true);
-            Bus busTwo = new Bus(trajectory, trajectory[1], false);
-            Bus busThree = new Bus(trajectory, trajectory[2], true);
-            Bus busFour = new Bus(trajectory, trajectory[3], false);
-            Paint += busOne.Paint;
-            Paint += busTwo.Paint;
-            Paint += busThree.Paint;
-            Paint += busFour.Paint;
-            buses.Add(busOne);
-            buses.Add(busTwo);
-            buses.Add(busThree);
-            buses.Add(busFour);
+            List<BusStop> busStops = new List<BusStop>();
+
+            /*KeyValuePair<PointF, bool> stop = new KeyValuePair<PointF, bool>(new PointF(xLeft, y), false);
+            List<KeyValuePair<PointF, bool>> stops = new List<KeyValuePair<PointF, bool>>();
+            stops.Add(stop);
+            busStops.Add(new BusStop(stops));
+
+            KeyValuePair<PointF, bool> stop1 = new KeyValuePair<PointF, bool>(new PointF(xRight - GlobalVariables.bus_Size.Width, y), false);
+            List<KeyValuePair<PointF, bool>> stops1 = new List<KeyValuePair<PointF, bool>>();
+            stops1.Add(stop1);
+            busStops.Add(new BusStop(stops1));
+
+            KeyValuePair<PointF, bool> stop2 = new KeyValuePair<PointF, bool>(new PointF(xRight - GlobalVariables.bus_Size.Width, y + GlobalVariables.bus_Size.Width), false);
+            List<KeyValuePair<PointF, bool>> stops2 = new List<KeyValuePair<PointF, bool>>();
+            stops2.Add(stop2);
+            busStops.Add(new BusStop(stops2));
+
+            KeyValuePair<PointF, bool> stop3 = new KeyValuePair<PointF, bool>(new PointF(xLeft, y + GlobalVariables.bus_Size.Width), false);
+            List<KeyValuePair<PointF, bool>> stops3 = new List<KeyValuePair<PointF, bool>>();
+            stops3.Add(stop3);
+            busStops.Add(new BusStop(stops3));*/
+
+            List<KeyValuePair<PointF, bool>> stops = new List<KeyValuePair<PointF, bool>>();
+            KeyValuePair<PointF, bool> stop = new KeyValuePair<PointF, bool>(new PointF(xLeft, y), false);
+            KeyValuePair<PointF, bool> stop1 = new KeyValuePair<PointF, bool>(new PointF(xRight - GlobalVariables.bus_Size.Width, y), false);
+            stops.Add(stop);
+            stops.Add(stop1);
+            busStops.Add(new BusStop(stops));
+
+            List<KeyValuePair<PointF, bool>> stops1 = new List<KeyValuePair<PointF, bool>>();
+            KeyValuePair<PointF, bool> stop2 = new KeyValuePair<PointF, bool>(new PointF(xRight - GlobalVariables.bus_Size.Width, y + GlobalVariables.bus_Size.Width), false);
+            KeyValuePair<PointF, bool> stop3 = new KeyValuePair<PointF, bool>(new PointF(xLeft, y + GlobalVariables.bus_Size.Width), false);
+            stops1.Add(stop2);
+            stops1.Add(stop3);
+            busStops.Add(new BusStop(stops1));
+
+            BusLine busLine = new BusLine(busStops);
+
+            List<Bus> horizontalBuses = new List<Bus>();
+
+            horizontalBuses.Add(new Bus(busLine, true));
+            //horizontalBuses.Add(new Bus(busLine, busLine., true));
+            horizontalBuses.ForEach(b => Paint += b.Paint);
+            buses.AddRange(horizontalBuses);
         }
 
+        /*
         private void CreateVerticalBusLine(int yTop, int yBottom, int x)
         {
             List<PointF> trajectory = new List<PointF>();
+            List<Bus> verticalBuses = new List<Bus>();
+
             trajectory.Add(new PointF(x, yTop));
             trajectory.Add(new PointF(x, yBottom - GlobalVariables.bus_Size.Width));
             trajectory.Add(new PointF(x + GlobalVariables.bus_Size.Width, yBottom - GlobalVariables.bus_Size.Width));
             trajectory.Add(new PointF(x + GlobalVariables.bus_Size.Width, yTop));
-            Bus busOne = new Bus(trajectory, false);
-            Bus busTwo = new Bus(trajectory, trajectory[1], true);
-            Bus busThree = new Bus(trajectory, trajectory[2], false);
-            Bus busFour = new Bus(trajectory, trajectory[3], true);
-            Paint += busOne.Paint;
-            Paint += busTwo.Paint;
-            Paint += busThree.Paint;
-            Paint += busFour.Paint;
-            buses.Add(busOne);
-            buses.Add(busTwo);
-            buses.Add(busThree);
-            buses.Add(busFour);
+
+            verticalBuses.Add(new Bus(trajectory, false));
+            verticalBuses.Add(new Bus(trajectory, trajectory[2], false));
+            verticalBuses.ForEach(b => Paint += b.Paint);
+            buses.AddRange(verticalBuses);
         }
 
         private void CreatePerimeterBusLine(Point perimtererTopLeft, Point perimtererBottomRight)
         {
             List<PointF> trajectory = new List<PointF>();
+            List<Bus> perimeterBuses = new List<Bus>();
+
             trajectory.Add(new PointF(perimtererTopLeft.X - GlobalVariables.bus_Size.Width, perimtererTopLeft.Y - GlobalVariables.bus_Size.Width));
             trajectory.Add(new PointF(perimtererBottomRight.X, perimtererTopLeft.Y - GlobalVariables.bus_Size.Width));
             trajectory.Add(new PointF(perimtererBottomRight.X, perimtererBottomRight.Y));
             trajectory.Add(new PointF(perimtererTopLeft.X - GlobalVariables.bus_Size.Width, perimtererBottomRight.Y));
 
-            Bus busOne = new Bus(trajectory, true);
-            Bus busTwo = new Bus(trajectory, trajectory[1], false);
-            Bus busThree = new Bus(trajectory, trajectory[2], true);
-            Bus busFour = new Bus(trajectory, trajectory[3], false);
-            Paint += busOne.Paint;
-            Paint += busTwo.Paint;
-            Paint += busThree.Paint;
-            Paint += busFour.Paint;
-            buses.Add(busOne);
-            buses.Add(busTwo);
-            buses.Add(busThree);
-            buses.Add(busFour);
+            perimeterBuses.Add(new Bus(trajectory, true));
+            perimeterBuses.Add(new Bus(trajectory, trajectory[1], false));
+            perimeterBuses.Add(new Bus(trajectory, trajectory[2], true));
+            perimeterBuses.Add(new Bus(trajectory, trajectory[3], false));
+            perimeterBuses.ForEach(b => Paint += b.Paint);
+            buses.AddRange(perimeterBuses);
         }
 
         // méthode de modification de la taille des batiments, véhicules et individus en fonction du nombre d'éléments.
+    */
     }
 }
