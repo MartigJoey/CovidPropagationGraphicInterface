@@ -129,3 +129,31 @@
   - Positionnement dynamique en fonction du nombre de batiments de chaque type
   - ![Positionnement des bâtiments](Medias/BuildingPositionnement.png)
   - Refactorisation
+
+# 05.04.2021
+- Modification du positionnement dynamique pour prendre la taille en compte.
+  - ![Positionnement des bâtiments](Medias/BuildingPositionnement2.png)
+- Création des bus
+  - Reflexion sur leur fonctionnement
+    - Créer un "arrêt" de bus pour chaque ligne et colonne.
+    - Les bus se garent là et se dirigent vers une zone
+
+# 10.04.2021
+- Création des bus
+  - Reflexion sur leur fonctionnement
+  - Idée 1:
+    - Les bus s'arrête aux arrêt et reparte selon un horaire fixe.
+    - Ils se situent au centre avec le reste du trafique.
+    - Le fait qu'ils se situent au centre risque de rendre la simulation illisible par le trop grand nombre de véhicules.
+    - ![Première idée de structure des bus Intérieur](Medias/Bus1.png)
+  - Idée 2:
+    - Cette structure permet de limiter le nombre d'entités au centre.
+    - Cependant la création de celle-ci semble extremement compliquée.
+    - Il semble aussi compliqué de l'implémenter correctement pour subvenir aux besoins de transports nécessaire au fonctionnement de la simulation
+    - ![Deuxième idée de structure des bus Exterieur](Medias/Bus2.png)
+  - Idée 3:
+    - Version simplifiée de l'idée 2
+    - Plutôt que d'avoir une grande quantité de voie. Simplement avoir une voie pour chaque ligne/Colonne et une voie les reliant toutes.
+    - ![Troisième idée de structure des bus Exterieur](Medias/Bus3.png)
+- Ajout d'une légende
+  - ![Légende de l'interface graphique](Medias/Legend.png)

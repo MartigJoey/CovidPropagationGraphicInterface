@@ -26,7 +26,7 @@ namespace CovidPropagationGraphicInterface
         public Person(Planning planning)
         {
             this._planning = planning;
-            _color = Brushes.Blue;
+            _color = Constant.SANE_PERSON_BRUSH_COLOR;
             _size = Constant.PERSON_SIZE;
             _trajectory = new Trajectory();
             TeleportToLocation();

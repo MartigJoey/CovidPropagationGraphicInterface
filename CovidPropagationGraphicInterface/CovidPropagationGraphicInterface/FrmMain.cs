@@ -52,17 +52,17 @@ namespace CovidPropagationGraphicInterface
         {
             List<Building> buildings = new List<Building>();
             buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(30, 30), BuildingType.Home));
+            buildings.Add(new Building(new Size(30, 30), BuildingType.Home));
+            buildings.Add(new Building(new Size(30, 30), BuildingType.Home));
+            buildings.Add(new Building(new Size(30, 30), BuildingType.Home));
 
             buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
             buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
 
-            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
+            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
+            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
 
             buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
             buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));

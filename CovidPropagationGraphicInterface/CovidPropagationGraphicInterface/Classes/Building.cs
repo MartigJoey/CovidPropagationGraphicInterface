@@ -34,22 +34,22 @@ namespace CovidPropagationGraphicInterface
             switch (Type)
             {
                 case BuildingType.Home:
-                    _color = Pens.Blue;
+                    _color = Constant.HOME_PEN_COLOR;
                     break;
                 case BuildingType.School:
-                    _color = Pens.Beige;
+                    _color = Constant.SCHOOL_PEN_COLOR;
                     break;
                 case BuildingType.Hospital:
-                    _color = Pens.Red;
+                    _color = Constant.HOSPITAL_PEN_COLOR;
                     break;
                 case BuildingType.Company:
-                    _color = Pens.Yellow;
+                    _color = Constant.COMPANY_PEN_COLOR;
                     break;
                 case BuildingType.Supermarket:
-                    _color = Pens.Green;
+                    _color = Constant.SUPERMARKET_PEN_COLOR;
                     break;
                 case BuildingType.Restaurant:
-                    _color = Pens.Gold;
+                    _color = Constant.RESTAURANT_PEN_COLOR;
                     break;
                 default:
                     break;
