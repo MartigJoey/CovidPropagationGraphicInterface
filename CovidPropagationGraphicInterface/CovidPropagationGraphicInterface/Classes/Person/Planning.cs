@@ -15,19 +15,31 @@ namespace CovidPropagationGraphicInterface.Classes.Person
     /// </summary>
     class Planning
     {
-        private Day[] _days = new Day[Constant.NUMBER_OF_DAY];
+        private Day[] _days = new Day[GlobalVariables.NUMBER_OF_DAY];
 
         public Day[] Days { get => _days; }
         public PointF Location { get => GetActivity(TimeManager.CurrentDay, TimeManager.CurrentPeriod).Inside; }
+        public PointF NextLocation { get => GetNextActivity().Inside; }
 
         public Planning(Day[] days)
         {
             _days = days;
         }
 
-        public Building GetActivity(int dayOfWeek, int periodOfDay)
+        public Activity GetActivity(int dayOfWeek, int periodOfDay)
         {
             return _days[dayOfWeek].GetActivity(periodOfDay);
+        }
+
+        public Activity GetActivity()
+        {
+            return _days[TimeManager.CurrentDay].GetActivity(TimeManager.CurrentPeriod);
+        }
+
+        public Activity GetNextActivity()
+        {
+            int[] nextPeiod = TimeManager.GetNextPeriod();
+            return _days[nextPeiod[0]].GetActivity(nextPeiod[1]);
         }
     }
 }

@@ -9,28 +9,33 @@ using CovidPropagationGraphicInterface.Classes;
 
 namespace CovidPropagationGraphicInterface
 {
-    class Building
+    class Building : Activity
     {
         private Random rdm = new Random();
         private Point _location;
         private Size _size;
         private Pen _color;
+        private BuildingType _type;
 
-        public Point Location { get => _location; }
-        public Point Inside { get => new Point(
-                                        rdm.Next(_location.X + Constant.PERSON_SIZE.Width, _location.X + _size.Width - Constant.PERSON_SIZE.Width),
-                                        rdm.Next(_location.Y + Constant.PERSON_SIZE.Height, _location.Y + _size.Height - Constant.PERSON_SIZE.Height)
+        public PointF Location { get => _location; set => _location = Point.Round(value); }
+        public PointF Inside { get => new Point(
+                                        rdm.Next(_location.X + GlobalVariables.person_Size.Width, _location.X + _size.Width - GlobalVariables.person_Size.Width),
+                                        rdm.Next(_location.Y + GlobalVariables.person_Size.Height, _location.Y + _size.Height - GlobalVariables.person_Size.Height)
                                     ); 
         }
         public Size Size { get => _size; }
+        internal BuildingType Type { get => _type; set => _type = value; }
 
-        public Building(Point location, Size size, BuildingType type)
+        public Building(Size size, BuildingType type)
         {
-            this._location = location;
-            this._size = size;
+            _size = size;
+            Type = type;
 
-            switch (type)
+            switch (Type)
             {
+                case BuildingType.Home:
+                    _color = Pens.Blue;
+                    break;
                 case BuildingType.School:
                     _color = Pens.Beige;
                     break;

@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace CovidPropagationGraphicInterface
 {
-    enum BuildingType
+    public static class ListExtensions
     {
-        School,
-        Hospital,
-        Home,
-        Company,
-        Supermarket,
-        Restaurant
+        public static int CountFromZero<T>(this List<T> list)
+        {
+            return list.Count - 1;
+        }
     }
 }

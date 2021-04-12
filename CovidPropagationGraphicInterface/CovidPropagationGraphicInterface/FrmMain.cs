@@ -17,16 +17,21 @@ namespace CovidPropagationGraphicInterface
         List<Person> dummyPersons;
         List<Building> dummyBuilding;
         List<Vehicle> dummyVehicle;
+        List<Bus> dummyBus;
+
+        State testChange;
 
         public FrmMain()
         {
             InitializeComponent();
             timer.Tick += new EventHandler(graphicInterface.OnTick);
+            timer.Interval = GlobalVariables.TIMER_INTERVAL;
             TimeManager.Init();
-            dummyBuilding = GenerateDummyBuildings(20);
-            dummyVehicle = GenerateDummyVehicle(30);
-            dummyPersons = GenerateDummyPersons(30);
-            graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle);
+            dummyBuilding = GenerateDummyBuildings();
+            dummyVehicle = GenerateDummyVehicle(31);
+            dummyPersons = GenerateDummyPersons(31);
+            dummyBus = GenerateDummyBus();
+            graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle, dummyBus);
         }
 
         private void Start_Click(object sender, EventArgs e)
@@ -38,6 +43,7 @@ namespace CovidPropagationGraphicInterface
         private void Stop_Click(object sender, EventArgs e)
         {
             timer.Enabled = false;
+            testChange.CurrentState = PersonState.Infected;
             graphicInterface.TimerStop();
         }
 
@@ -47,51 +53,39 @@ namespace CovidPropagationGraphicInterface
         /// </summary>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        private List<Building> GenerateDummyBuildings(int quantity)
+        private List<Building> GenerateDummyBuildings()
         {
-            Random rdm = new Random();
             List<Building> buildings = new List<Building>();
-            int probaSchoolMin = 70, probaSchoolMax = 85;
-            int probaSupermarketMin = 50, probaSupermarketMax = 70;
-            int probaRestaurantMin = 30, probaRestaurantMax = 50;
-            int probaCompanyMin = 0, probaCompanyMax = 30;
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
 
-            int defaultSize = 50;
-            int space = 5;
-            int defaultLocationX = 0;
-            int defaultLocationY = 70;
-           
-            for (int i = 0; i < quantity; i++)
-            {
-                int proba = rdm.Next(0, 100);
-                BuildingType type;
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
 
-                if (probaCompanyMin < proba && probaCompanyMax > proba)
-                {
-                    type = BuildingType.Company;
-                }
-                else if (probaRestaurantMin < proba && probaRestaurantMax > proba)
-                {
-                    type = BuildingType.Restaurant;
-                }
-                else if (probaSupermarketMin < proba && probaSupermarketMax > proba)
-                {
-                    type = BuildingType.Supermarket;
-                }
-                else if (probaSchoolMin < proba && probaSchoolMax > proba)
-                {
-                    type = BuildingType.School;
-                }
-                else
-                {
-                    type = BuildingType.Hospital;
-                }
-                Console.WriteLine(graphicInterface.Size.Width);
-                int positionX = rdm.Next(0, graphicInterface.Size.Width - defaultSize);
-                int positionY = rdm.Next(0, graphicInterface.Size.Height - defaultSize);
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
 
-                buildings.Add(new Building(new Point(positionX, positionY), new Size(defaultSize, defaultSize), type));
-            }
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
+
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+
             return buildings;
         }
 
@@ -105,7 +99,8 @@ namespace CovidPropagationGraphicInterface
             List<Person> persons = new List<Person>();
             for (int i = 0; i < quantity; i++)
             {
-                persons.Add(CreatePerson(rdm));
+                Person person = CreatePerson(rdm, i);
+                persons.Add(person);
             }
 
             return persons;
@@ -115,34 +110,49 @@ namespace CovidPropagationGraphicInterface
         /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
         /// lors du travail de diplome pour permettre la création d'individus par la simulation. ⚠️
         /// </summary>
-        private Person CreatePerson(Random rdm)
+        private Person CreatePerson(Random rdm, int personIndex)
         {
-            Classes.Person.Day[] day = new Classes.Person.Day[Constant.NUMBER_OF_DAY];
-            for (int i = 0; i < Constant.NUMBER_OF_DAY; i++)
-            {
-                Period[] period = new Period[Constant.NUMBER_OF_PERIODS];
-                for (int j = 0; j < Constant.NUMBER_OF_PERIODS; j++)
-                {
-                    int nbBuilding = dummyBuilding.Count - 1;
-                    Building firstactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
-                    Building secondactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
-                    Building thirdactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+            Classes.Person.Day[] day = new Classes.Person.Day[GlobalVariables.NUMBER_OF_DAY];
 
-                    if (j < Constant.NUMBER_OF_PERIODS / 3)
+            int nbBuilding = dummyBuilding.CountFromZero();
+            Building firstactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+            Building secondactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+            Building thirdactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+            for (int i = 0; i < GlobalVariables.NUMBER_OF_DAY; i++)
+            {
+                Period[] period = new Period[GlobalVariables.NUMBER_OF_PERIODS];
+                for (int j = 0; j < GlobalVariables.NUMBER_OF_PERIODS; j++)
+                {
+                    if (j < GlobalVariables.NUMBER_OF_PERIODS / 3)
                     {
                         period[j] = new Period(firstactivity);
-                    }else if (j < (Constant.NUMBER_OF_PERIODS / 3) * 2)
+                    }else if (j < (GlobalVariables.NUMBER_OF_PERIODS / 3) * 2)
                     {
                         period[j] = new Period(secondactivity);
-                    }else if (j < Constant.NUMBER_OF_PERIODS)
+                    }else if (j < GlobalVariables.NUMBER_OF_PERIODS)
                     {
                         period[j] = new Period(thirdactivity);
+                    }
+
+                    Vehicle travelCar = dummyVehicle[personIndex];
+                    if (j == GlobalVariables.NUMBER_OF_PERIODS / 3)
+                    {
+                        period[j] = new Period(travelCar);
+                    }
+                    else if (j == (GlobalVariables.NUMBER_OF_PERIODS / 3) * 2)
+                    {
+                        period[j] = new Period(travelCar);
+                    }
+                    else if (j == GlobalVariables.NUMBER_OF_PERIODS-1)
+                    {
+                        period[j] = new Period(travelCar);
                     }
                 }
                 day[i] = new Classes.Person.Day(period);
             }
             Planning planning = new Planning(day);
-            return new Person(planning, dummyVehicle[0]);
+            testChange = new State();
+            return new Person(planning, testChange);
         }
 
         /// <summary>
@@ -157,6 +167,11 @@ namespace CovidPropagationGraphicInterface
                 vehicles.Add(new Car());
             }
             return vehicles;
+        }
+
+        private List<Bus> GenerateDummyBus()
+        {
+            return new List<Bus>();
         }
     }
 }

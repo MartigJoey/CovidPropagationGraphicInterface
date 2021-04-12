@@ -15,52 +15,81 @@ namespace CovidPropagationGraphicInterface
         private Trajectory _trajectory;
         private Planning _planning;
         private PointF _location;
-        private PointF _departure;
-        private PointF _oldDestination;
+        private PointF _destination;
         private Size _size;
         private Brush _color;
-        private Vehicle movementMethod;
+        private float _movementX;
+        private float _movementY;
+        private State _state;
 
         internal Trajectory Trajectory { get => _trajectory; }
 
-        public Person(Planning planning, Vehicle vehicle)
+        public Person(Planning planning, State state)
         {
-            this._planning = planning;
-            movementMethod = vehicle;
+            _planning = planning;
+            _state = state;
             _color = Brushes.Blue;
-            _size = Constant.PERSON_SIZE;
+            _size = GlobalVariables.person_Size;
             _trajectory = new Trajectory();
             TeleportToLocation();
         }
 
-        public void Action()
+        public void ChangeActivity()
         {
-            PointF destination = _planning.Location;
-            GoToLocation(destination); // Utiliser le véhicule pour les déplacements hors batiments
-        }
-        private void GoToLocation(PointF destination)
-        {
-            if (!destination.Equals(_oldDestination))
+            _destination = _planning.Location;
+            switch (_planning.GetActivity())
             {
-                _departure = _location;
-                _oldDestination = destination;
-                // Calcule vitesse
-                _trajectory.SetTrajectory(_departure, destination);
+                case Car car:
+                    PointF carDestination = _planning.NextLocation;
+                    car.TeleportToLocation(_location);
+                    car.SetDestination(carDestination);
+                    TeleportToLocation(car.Inside); // Remplacer par un déplacement
+                    _trajectory.Enabled = true;
+                    _trajectory.SetTrajectory(_location, carDestination);
+                    break;
+                case Bus bus:
+                    break;
+                default:
+                    CalculateMovementSpeed();
+                    _trajectory.Enabled = false;
+                    break;
             }
-
-            // _location.X += vitesse.X;
-            // _location.Y += vitesse.Y;
-
-            /*
-             * Quand il change de destination, calculer sa vitesse et afficher sa trajectoire UNE FOIS. X
-             * Une fois la vitesse calculée, commencer le déplacement.
-             * Incrémenter ou décrémenter sa position en x et en y en fonction de sa vitesse.
-             */
         }
 
-        private void CalculateSpeed()
+        public void GoToLocation()
         {
+            switch (_planning.GetActivity())
+            {
+                case Car car:
+                    car.GoToLocation();
+                    _location = car.Inside;
+                    break;
+                case Bus bus:
+                    break;
+                default:
+                    _location.X += _movementX;
+                    _location.Y += _movementY;
+                    break;
+            }
+        }
 
+        private void CalculateMovementSpeed()
+        {
+            float distanceX, distanceY;
+
+            distanceX = (float)Math.Sqrt(Math.Pow(_destination.X - _location.X, 2));
+            distanceY = (float)Math.Sqrt(Math.Pow(_destination.Y - _location.Y, 2));
+
+            distanceX = _destination.X < _location.X ? distanceX * -1 : distanceX;
+            distanceY = _destination.Y < _location.Y ? distanceY * -1 : distanceY;
+
+            _movementX = distanceX / GlobalVariables.ANIMATION_PER_PERIOD;
+            _movementY = distanceY / GlobalVariables.ANIMATION_PER_PERIOD;
+        }
+
+        public void TeleportToLocation(PointF destination)
+        {
+            _location = destination;
         }
 
         /// <summary>
@@ -68,12 +97,25 @@ namespace CovidPropagationGraphicInterface
         /// </summary>
         public void TeleportToLocation()
         {
-            PointF destination = _planning.Location;
-            _location = destination;
+            _location = _planning.Location;
         }
 
         public void Paint(object sender, PaintEventArgs e)
         {
+            switch (_state.CurrentState)
+            {
+                default:
+                case PersonState.Healthy:
+                    _color = GlobalVariables.healthy_Person_Brush;
+                    break;
+                case PersonState.Infected:
+                    _color = GlobalVariables.Infected_Person_Brush;
+                    break;
+                case PersonState.Asymptomatic:
+                    _color = GlobalVariables.Asymptomatic_Person_Brush;
+                    break;
+            }
+
             e.Graphics.FillPie(_color, new Rectangle(Point.Round(_location), _size), 0f, 360f);
         }
     }

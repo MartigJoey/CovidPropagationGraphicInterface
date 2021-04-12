@@ -1,28 +1,43 @@
 ﻿using CovidPropagationGraphicInterface.Classes;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CovidPropagationGraphicInterface
 {
     class Car : Vehicle
     {
-        public Car(Point location, Size size, int maxPerson, Pen color) : base(location, size, maxPerson, color)
+        private bool _isDisplayed;
+        public Car(PointF location, Size size, int maxPerson) : base(location, size, maxPerson, GlobalVariables.car_Pen)
         {
-            // Do nothing
+            _isDisplayed = false;
         }
-        public Car() : this(new Point(0, 0), Constant.CAR_SIZE, Constant.CAR_MAX_PERSON, Pens.White)
+        public Car() : this(new PointF(0, 0), GlobalVariables.car_Size, GlobalVariables.CAR_MAX_PERSON)
         {
-            // Do nothing
+            // Does nothing
+        }
+
+        public override void SetDestination(PointF destination)
+        {
+            _isDisplayed = true;
+            _destination = destination;
+            CalculateMovementSpeed();
+        }
+
+        public override void GoToLocation()
+        {
+            _location.X += _movementX;
+            _location.Y += _movementY;
+
+            if (Point.Round(_location).Equals(Point.Round(_destination)))
+            {
+                _isDisplayed = false;
+            }
         }
 
         public override void Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawRectangle(_color, new Rectangle(_location, _size));
+            if (_isDisplayed)
+                e.Graphics.DrawRectangle(_color, new Rectangle(Point.Round(_location), _size));
         }
     }
 }

@@ -2,11 +2,11 @@
 {
     class Period
     {
-        private Building _activity;
+        private Activity _activity;
 
-        public Building Activity { get => _activity; }
+        public Activity Activity { get => _activity; }
 
-        public Period(Building activity)
+        public Period(Activity activity)
         {
             _activity = activity;
         }

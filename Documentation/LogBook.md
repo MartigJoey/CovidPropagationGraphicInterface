@@ -87,4 +87,75 @@
     - Utiliser les véhicule comme batiment à la place ?
 - Création des véhicules
   - La personne dans le vehicule le suit ~~ou l'inverse ?~~
-- 
+
+# 01.04.2021
+- Modification du planning pour y intégrer les trajets
+  - Création d'une interface "Activity" intégrant une propriété récupérant la position de l'activity ainsi que l'emplacement interne de celui-ci.
+- Création de "faux" véhicules destiné à être supprimé pour le travail de diplome
+- Modification du fonctionnement d'un individu
+    - Changement de quel timer affect quel évènement.
+    - Timer principal --> Change l'activité donc la destination
+    - Timer d'animation --> Déplace l'individus vers sa destination
+- ~~Ajout d'une classe "Walk" Si un individus marche à la place de prendre un véhicule.~~
+  - ~~`Penser à changer le nom de la classe parent.`~~
+  - ~~Peut être même à supprimer et simplement utiliser la classe person pour le déplacement~~
+
+# 02.04.2021
+- Utiliser des points dans les véhicules qu'un individus n'aura qu'à récupérer pour connaitre sa position dans le véhicule.
+- Déplacement des individus
+  - En fonction du timer d'animation
+  - Calcul la distance a parcouris
+  - La divise par le nombre de fps
+  - Utilise le résultat pour se déplacer à chaque frame
+  - ![Calcul des déplacements des individus](Medias/Movement2.png)
+
+# 03.04.2021
+- Pour le travail de diplôme, ajouter des chauffeurs de bus.
+- Bug
+  - Les voitures s'arrête au milieux du trajet. (Elles semblent ne pas aller assez vite alors que les données (position, vitesse, destination) sont correctes)
+  - Les timers en sont la cause.
+    - Le timer d'animation n'a pas le temps d'effectuer ses 60 frames avant que le second timer n'effectue le changement de periods
+    - L'interval est en int --> impossible d'aller assez rapidement et précisement
+    - Erreur --> actuellement ~~60 fps~~ mais 60 images par periodes
+    - ![Calcul de l'interval du timer d'animation](Medias/Timer.png)
+  - Problèmes de timer et voitures réglé !
+
+# 04.04.2021
+- Réglage d'un bug qui permettait aux objets en mouvements de se déplacer plus loins que prévu.
+  - Le timer itérait parfois 64 fois par seconde alors que les objets calcuilait leur vitesse pour bouger 60 fois. Ils se déplaçait donc trop loins 4 fois.
+- Positionnement des batiments
+  - Bug. Les batiments se placenent correctement en théorie mais sont déplacé en 0;0 sans raison connue.
+  - Modification du code dans PositioningBuildings()  Foreach + Switch --> Linq
+  - Positionnement dynamique en fonction du nombre de batiments de chaque type
+  - ![Positionnement des bâtiments](Medias/BuildingPositionnement.png)
+  - Refactorisation
+
+# 12.04.2021
+- Oubli de push une partie du travail effectué durant les vacances
+  - Futur problèmes de conflits avec git prévu dans le code et logbook
+- Implémentation du Status des individus
+  - Les pointeurs de variables simple tel que les enums ne pouvant être utilisé uniquement en mode unsafe, création d'un objet simple contenant l'état
+  - Le but étant que les personnes de la simulation et de l'interface graphique pointent sur le même état et qu'en cas de modification de la simulation, l'interface change automatiquement.
+- Modification de la structure de la classe véhicule pour intégrer les bus
+  - Déplacements de méthodes de la classe parent à la classe voiture
+- Modification de la trajectoire pour l'afficher uniquement si il y a peu d'individus
+- Vehicules
+  - Les voitures ne s'affichent qu'en cas de déplacements
+  - Reflection sur les bus. L'idée actuelle est bonne mais risque de restraindre la simulation en terme de planning.
+    - Essayer de simplifier encore pour n'avoir qu'une seule ligne de bus qui fait le tour des batiments
+    - Problème similaire. Si les bus vont trop vite, ce n'est pas lisible. S'ils vont trop lentement, Risque de téléportation et incohérence
+    - Idée final permettant le déplacement des individus de manière optimal tout en limitant le traffique au centre.
+    - ![Idée final sur la structure des bus](Medias/Bus4.png)
+    - Ajouter des arrêts de bus ? 1 par ligne/colonne
+      - +Permet un affichage plus propre et vivant
+      - -Encore plus difficile à mettre en place
+- Ajout d'une extension de liste permettant de compter le nombre d'élément dans la liste en partant de 0. ( évitant donc de faire list.Count - 1 )
+- Création des bus
+  - Première itération.
+    - Création des lignes de bus puis positionnement des bus. Une fois lançé, les bus se déplacent en boucle sur leur ligne.
+    - Probable futur problème pour cloner les bus de la simulation pour l'interface graphique.
+    - Tentative de rotation des bus. Impossible avec C#. La rotation tourne l'entièreté de l'interface.
+    - Essai de rotation en interchangeant largeur et hauteur.
+    - Les bus en intérieur sont fonctionnel.
+      - Pour le moment ils ne prennent pas en compte les individus qui entrent / sortent
+    - Ligne des bus exterieure effectué au même niveau que les bus intérieurs

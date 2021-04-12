@@ -2,7 +2,7 @@
 {
     class Day
     {
-        private Period[] _periods = new Period[Constant.NUMBER_OF_PERIODS];
+        private Period[] _periods = new Period[GlobalVariables.NUMBER_OF_PERIODS];
 
         public Period[] Periods { get => _periods; }
 
@@ -11,7 +11,7 @@
             _periods = periods;
         }
 
-        public Building GetActivity(int period)
+        public Activity GetActivity(int period)
         {
             return Periods[period].Activity;
         }
