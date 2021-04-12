@@ -87,3 +87,4 @@
     - Utiliser les véhicule comme batiment à la place ?
 - Création des véhicules
   - La personne dans le vehicule le suit ~~ou l'inverse ?~~
+- 
