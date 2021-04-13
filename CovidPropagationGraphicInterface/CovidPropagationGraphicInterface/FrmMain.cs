@@ -1,5 +1,6 @@
 ﻿using CovidPropagationGraphicInterface.Classes;
 using CovidPropagationGraphicInterface.Classes.Person;
+using CovidPropagationGraphicInterface.Classes.Vehicle;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,8 @@ namespace CovidPropagationGraphicInterface
         List<Vehicle> dummyVehicle;
         List<Bus> dummyBus;
 
+        BuildingGenerator buildingGenerator;
+        BusLineGenerator busLineGenerator;
         State testChange;
 
         public FrmMain()
@@ -30,7 +33,10 @@ namespace CovidPropagationGraphicInterface
             dummyBuilding = GenerateDummyBuildings();
             dummyVehicle = GenerateDummyVehicle(31);
             dummyPersons = GenerateDummyPersons(31);
-            dummyBus = GenerateDummyBus();
+            buildingGenerator = new BuildingGenerator(dummyBuilding);
+            busLineGenerator = new BusLineGenerator(buildingGenerator.CenterZoneTopLeft, buildingGenerator.CenterZoneBottomRight, buildingGenerator.PerimeterZoneTopLeft, buildingGenerator.PerimeterZoneBottomRight);
+
+            dummyBus = busLineGenerator.Buses;
             graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle, dummyBus);
         }
 
@@ -62,29 +68,29 @@ namespace CovidPropagationGraphicInterface
             buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
             buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
 
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Hospital));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Hospital));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
                                                    
-            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
 
             buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
             buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
 
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Restaurant));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Restaurant));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Restaurant));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Restaurant));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
 
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Company));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Company));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Company));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Company));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Company));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Company));
-            buildings.Add(new Building(new Size(20, 20), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
 
             return buildings;
         }
@@ -99,7 +105,12 @@ namespace CovidPropagationGraphicInterface
             List<Person> persons = new List<Person>();
             for (int i = 0; i < quantity; i++)
             {
-                Person person = CreatePerson(rdm, i);
+                Person person;
+                if (i == quantity - 10)
+                    person = CreatePerson(rdm, i, true);
+                else
+                    person = CreatePerson(rdm, i, false);
+
                 persons.Add(person);
             }
 
@@ -110,7 +121,7 @@ namespace CovidPropagationGraphicInterface
         /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
         /// lors du travail de diplome pour permettre la création d'individus par la simulation. ⚠️
         /// </summary>
-        private Person CreatePerson(Random rdm, int personIndex)
+        private Person CreatePerson(Random rdm, int personIndex, bool takesBus)
         {
             Classes.Person.Day[] day = new Classes.Person.Day[GlobalVariables.NUMBER_OF_DAY];
 
@@ -134,18 +145,25 @@ namespace CovidPropagationGraphicInterface
                         period[j] = new Period(thirdactivity);
                     }
 
-                    Vehicle travelCar = dummyVehicle[personIndex];
-                    if (j == GlobalVariables.NUMBER_OF_PERIODS / 3)
+                    if (takesBus)
                     {
-                        period[j] = new Period(travelCar);
+
                     }
-                    else if (j == (GlobalVariables.NUMBER_OF_PERIODS / 3) * 2)
+                    else
                     {
-                        period[j] = new Period(travelCar);
-                    }
-                    else if (j == GlobalVariables.NUMBER_OF_PERIODS-1)
-                    {
-                        period[j] = new Period(travelCar);
+                        Vehicle travelCar = dummyVehicle[personIndex];
+                        if (j == GlobalVariables.NUMBER_OF_PERIODS / 3)
+                        {
+                            period[j] = new Period(travelCar);
+                        }
+                        else if (j == (GlobalVariables.NUMBER_OF_PERIODS / 3) * 2)
+                        {
+                            period[j] = new Period(travelCar);
+                        }
+                        else if (j == GlobalVariables.NUMBER_OF_PERIODS - 1)
+                        {
+                            period[j] = new Period(travelCar);
+                        }
                     }
                 }
                 day[i] = new Classes.Person.Day(period);

@@ -19,8 +19,7 @@ namespace CovidPropagationGraphicInterface.Classes.Vehicle
                     next = _busStops[0];
                 else
                     next = _busStops[i+1];
-
-                current.AddNextBusStopFirstElement(next.GetCurrentPoint(0).Key);
+                current.AddNextBusStopFirstElement(next.GetCurrentPoint(0));
             }
         }
 

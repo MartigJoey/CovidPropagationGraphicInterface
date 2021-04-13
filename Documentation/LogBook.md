@@ -201,3 +201,15 @@
     - Il s'agissait des déplacements qui étaient trop élevé pour correspondre au code qui détecte lorsque le bus est arrivé à destination.
   - Le bus se calcule sa vitesse de la même manière pour les longues et courte distance. Il va donc très(trop) vite dans les longues distances et très lentement dans les courtes
   - Modification du code pour choisir la vitesse.
+  - Fonctionne correctement
+  - Bug de positionnement. les calculs se faisant en float, de très légé écart aparraissaient menant à une "collision" entre les bus se croisant.
+  - Bug réglé dans réinitialisant les positions à chaque arrivée.
+  - Refactorisation du code de création des lignes de bus.
+  - Recréation de la ligne exterieur des bus
+  - Bus Fonctionnels
+- Création d'une methode d'extension de Point/PointF permettant de les cloner.
+- Refactoring Génération des bus et batiments
+- Refactoring Ligne de bus
+- Tentative d'automatiser la direction des bus. Echec. Les bus du centre n'obéissant pas à la même logique, c'est impossible / trop complexe de l'automatiser.
+- Modification de l'heure l'arrivée des bus du centre (de fin de période à début)
+- Début de l'insertion des individus dans les bus.

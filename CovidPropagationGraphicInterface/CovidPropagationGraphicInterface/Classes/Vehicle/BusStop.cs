@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 
 namespace CovidPropagationGraphicInterface.Classes.Vehicle
 {
     class BusStop
     {
-        private List<KeyValuePair<PointF, bool>> _points;
-        private float _totalLength;
-        public BusStop(List<KeyValuePair<PointF, bool>> point)
+        private List<BusStopPoint> _points;
+        public BusStop(List<BusStopPoint> point)
         {
             _points = point;
         }
 
-        public void AddNextBusStopFirstElement(PointF point)
+        public void AddNextBusStopFirstElement(BusStopPoint point)
         {
-            _points.Add(new KeyValuePair<PointF, bool>(point, false));
-            _totalLength = GetTotalLength();
+            _points.Add(point.Clone());
         }
 
-        public KeyValuePair<PointF, bool> GetCurrentPoint(int current)
+        public BusStopPoint GetCurrentPoint(int current)
         {
-
             return _points[current];
+        }
+
+        public BusStopPoint GetLastPoint()
+        {
+            return _points[_points.CountFromZero()];
         }
 
         public int GetNextPointIndex(int current)
@@ -38,30 +38,9 @@ namespace CovidPropagationGraphicInterface.Classes.Vehicle
             return _points.Count;
         }
 
-        /// Utiliser un dictionnaire pour optimiser
-        public float GetThisPointLengthInPercent(int current)
+        public float GetThisPointDurationInPercent(int current)
         {
-            int next = GetNextPointIndex(current);
-            float thisPointLength = (float)Math.Sqrt(Math.Pow(_points[next].Key.X - _points[current].Key.X, 2) + Math.Pow(_points[next].Key.Y - _points[current].Key.Y, 2));
-            return 100 - thisPointLength / _totalLength * 100;
-        }
-
-        private float GetTotalLength()
-        {
-            float totalLength = 0;
-            PointF prev = PointF.Empty;
-            foreach (var point in _points)
-            {
-                if (prev == PointF.Empty)
-                {
-                    prev = point.Key;
-                    continue;
-                }
-                totalLength += (float)Math.Sqrt(Math.Pow(point.Key.X - prev.X, 2) + Math.Pow(point.Key.Y - prev.Y, 2));
-
-                prev = point.Key;
-            }
-            return totalLength;
+            return _points[current].durationInPercent;
         }
     }
 }

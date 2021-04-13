@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using CovidPropagationGraphicInterface.Classes.Person;
@@ -48,6 +44,8 @@ namespace CovidPropagationGraphicInterface
                     _trajectory.SetTrajectory(_location, carDestination);
                     break;
                 case Bus bus:
+                    TeleportToLocation(bus.Inside);// Remplacer par un déplacement
+                    _trajectory.Enabled = false;
                     break;
                 default:
                     CalculateMovementSpeed();

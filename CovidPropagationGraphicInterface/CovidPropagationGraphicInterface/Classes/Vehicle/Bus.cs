@@ -12,47 +12,48 @@ namespace CovidPropagationGraphicInterface
         private BusLine _busLine;
         private int _busStopIndex;
         private int _pointIndex;
-        private bool _shouldRotate;
+        private bool _isVertical;
 
-        public Bus(PointF location, Size size, int maxPerson, Pen color, BusLine busLine, bool _isHorizontal = true) : base(location, size, maxPerson, color)
+        public Bus(BusLine busLine, int currentStop = 1) : base(busLine.GetCurrentStop(currentStop).GetLastPoint().location, GlobalVariables.bus_Size, GlobalVariables.BUS_MAX_PERSON, GlobalVariables.bus_Pen)
         {
             _busLine = busLine;
-            _busStopIndex = 0;
+            _busStopIndex = currentStop;
             _pointIndex = 0;
-            _shouldRotate = false;
-            if (!_isHorizontal)
-                Rotate();
+            _isVertical = false;
         }
 
-        public Bus(BusLine busLine, PointF location, bool _isHorizontal = true) : this(location, GlobalVariables.bus_Size, GlobalVariables.BUS_MAX_PERSON, GlobalVariables.bus_Pen, busLine, _isHorizontal)
-        {
-            // Does nothing
-        }
-
-        public Bus(BusLine busLine, bool _isHorizontal = true) : this(busLine.GetCurrentStop(0).GetCurrentPoint(0).Key, GlobalVariables.bus_Size, GlobalVariables.BUS_MAX_PERSON, GlobalVariables.bus_Pen, busLine, _isHorizontal)
+        public Bus(BusLine busLine) : this(busLine, 0)
         {
             // Does nothing
         }
 
         public void NextStop()
         {
+            BusStopPoint busStop;
+            PointF oldDestination = _destination;
             _busStopIndex = _busLine.GetNextStopIndex(_busStopIndex);
             _pointIndex = 1;
-            _destination = _busLine.GetCurrentStop(_busStopIndex).GetCurrentPoint(_pointIndex).Key;
-            CalculateMovementSpeed(_busLine.GetCurrentStop(_busStopIndex).GetThisPointLengthInPercent(_pointIndex));
+            busStop = _busLine.GetCurrentStop(_busStopIndex).GetCurrentPoint(_pointIndex);
+            _isVertical = busStop.isVertical;
+            _destination = busStop.location;
+            CalculateMovementSpeed(_busLine.GetCurrentStop(_busStopIndex).GetThisPointDurationInPercent(_pointIndex), oldDestination);
         }
 
         public void NextPoint()
         {
-            _pointIndex = _busLine.GetCurrentStop(_busStopIndex).GetNextPointIndex(_pointIndex);
-            _destination = _busLine.GetCurrentStop(_busStopIndex).GetCurrentPoint(_pointIndex).Key;
-            _shouldRotate = true;
-            CalculateMovementSpeed(_busLine.GetCurrentStop(_busStopIndex).GetThisPointLengthInPercent(_pointIndex));
+            PointF oldDestination = _destination;
+            BusStop currentStop = _busLine.GetCurrentStop(_busStopIndex);
+            BusStopPoint point = currentStop.GetCurrentPoint(_pointIndex);
+            _pointIndex = currentStop.GetNextPointIndex(_pointIndex);
+            _destination = point.location;
+            _isVertical = point.isVertical;
+            CalculateMovementSpeed(point.durationInPercent, oldDestination);
         }
 
-        protected void CalculateMovementSpeed(float busStopPercent)
+        protected void CalculateMovementSpeed(float busStopPercent, PointF location)
         {
             float distanceX, distanceY, animationNb;
+            _location = location;
 
             distanceX = (float)Math.Sqrt(Math.Pow(_destination.X - _location.X, 2));
             distanceY = (float)Math.Sqrt(Math.Pow(_destination.Y - _location.Y, 2));
@@ -62,24 +63,22 @@ namespace CovidPropagationGraphicInterface
 
             animationNb = (float)GlobalVariables.ANIMATION_PER_PERIOD / 100 * busStopPercent;
 
-            //Console.WriteLine(animationNb);
-
             _movementX = distanceX / (float)Math.Round(animationNb, 0);
             _movementY = distanceY / (float)Math.Round(animationNb, 0);
-
-            //Console.WriteLine(_location + " " + _destination);
-            //Console.WriteLine(distanceX + "  movementX: " + distanceX / animationNb);
-            //Console.WriteLine(distanceY + "  movementY: " + distanceY / animationNb);
-            //Console.WriteLine("movementX: " + _movementX + "  DistanceX:" + distanceX);
-            //Console.WriteLine("movementY: " + _movementY + "  DistanceY:"+ distanceY);
-            //Console.WriteLine("___________________________ " + animationNb);
         }
 
         private void Rotate()
         {
-            Size tempSize = _size;
-            _size.Width = tempSize.Height;
-            _size.Height = tempSize.Width;
+            if (_isVertical)
+            {
+                _size.Width = GlobalVariables.bus_Size.Width;
+                _size.Height = GlobalVariables.bus_Size.Height;
+            }
+            else
+            {
+                _size.Width = GlobalVariables.bus_Size.Height;
+                _size.Height = GlobalVariables.bus_Size.Width;
+            }
         }
 
         public override void GoToLocation()
@@ -93,11 +92,7 @@ namespace CovidPropagationGraphicInterface
 
         public override void Paint(object sender, PaintEventArgs e)
         {
-            if (_shouldRotate)
-            {
-                Rotate();
-                _shouldRotate = false;
-            }
+            Rotate();
             e.Graphics.DrawRectangle(_color, new Rectangle(Point.Round(_location), _size));
         }
     }

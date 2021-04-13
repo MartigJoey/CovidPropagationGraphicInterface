@@ -7,11 +7,11 @@ namespace CovidPropagationGraphicInterface
     class Car : Vehicle
     {
         private bool _isDisplayed;
-        public Car(PointF location, Size size, int maxPerson) : base(location, size, maxPerson, GlobalVariables.car_Pen)
+        public Car(PointF location) : base(location, GlobalVariables.car_Size, GlobalVariables.CAR_MAX_PERSON, GlobalVariables.car_Pen)
         {
             _isDisplayed = false;
         }
-        public Car() : this(new PointF(0, 0), GlobalVariables.car_Size, GlobalVariables.CAR_MAX_PERSON)
+        public Car() : this(new PointF(0, 0))
         {
             // Does nothing
         }

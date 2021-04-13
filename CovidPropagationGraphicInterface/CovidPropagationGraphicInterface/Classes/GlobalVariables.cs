@@ -15,7 +15,7 @@ namespace CovidPropagationGraphicInterface.Classes
         public const int NUMBER_OF_DAY = 7;
 
         public const int ANIMATION_FPS = 60;
-        public const int TIMER_INTERVAL = 1000;
+        public const int TIMER_INTERVAL = 1000; // 50 minimum
         public const int ANIMATION_TIMER_INTERVAL =  15;
         public const int ANIMATION_PER_PERIOD = (int)(ANIMATION_FPS / (1000f / TIMER_INTERVAL));
 
