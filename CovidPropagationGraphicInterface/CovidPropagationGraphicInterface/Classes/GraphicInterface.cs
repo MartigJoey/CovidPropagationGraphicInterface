@@ -18,24 +18,28 @@ namespace CovidPropagationGraphicInterface
         List<Bus> buses;
 
         Clock clock;
+        Legend legend;
         int _currentAnimationPerPeriod; // Nombre de mouvements effectué durant une periode
 
         Bitmap bmp = null;
         Graphics g = null;
         Timer animationTimer;
+
+        internal bool HasStarted { get => persons != null; }
+
         public GraphicInterface()
         {
             DoubleBuffered = true;
             clock = new Clock(new Point(750, 10));
+            legend = new Legend(new Point(750, 60));
             Paint += clock.Paint;
+            Paint += legend.Paint;
             animationTimer = new Timer();
             animationTimer.Tick += new EventHandler(AnimationOnTick);
             animationTimer.Interval = GlobalVariables.ANIMATION_TIMER_INTERVAL;
             _currentAnimationPerPeriod = 0;
 
         }
-
-        internal bool HasStarted { get => persons != null; }
 
         public void Generate(List<Person> persons, List<Building> buildings, List<Vehicle> vehicles, List<Bus> bus)
         {
@@ -88,7 +92,6 @@ namespace CovidPropagationGraphicInterface
                     buses.ForEach(x => x.GoToLocation());
                     _currentAnimationPerPeriod++;
                 }
-
                 Invalidate(true);
             }
         }
@@ -129,28 +132,26 @@ namespace CovidPropagationGraphicInterface
                          select building).ToList();
 
             // Rows space
-            if (topRow.Count > bottomRow.Count)
-            {
-                brSpace = CalculateSpace(topRow.Count, topRow[0].Size.Width, trSpace,
-                               bottomRow.Count, bottomRow[0].Size.Width, brSpace);
-            }
+            int trSumElementSize = topRow.Sum(b => b.Size.Width);
+            int brSumElementSize = bottomRow.Sum(b => b.Size.Width);
+
+            if (trSumElementSize > brSumElementSize)
+                brSpace = CalculateSpace(topRow.Count, trSumElementSize, trSpace,
+                                         bottomRow.Count, brSumElementSize, brSpace);
             else
-            {
-                trSpace = CalculateSpace(bottomRow.Count, bottomRow[0].Size.Width, brSpace,
-                               topRow.Count, topRow[0].Size.Width, trSpace);
-            }
+                trSpace = CalculateSpace(bottomRow.Count, brSumElementSize, brSpace,
+                                             topRow.Count, trSumElementSize, trSpace);
 
             // Columns space
-            if (leftColumn.Count > rightColumn.Count)
-            {
-                rcSpace = CalculateSpace(leftColumn.Count, leftColumn[0].Size.Height, lcSpace,
-                               rightColumn.Count, rightColumn[0].Size.Height, rcSpace);
-            }
+            int lcSumElementSize = leftColumn.Sum(b => b.Size.Height);
+            int rcSumElementSize = rightColumn.Sum(b => b.Size.Height);
+
+            if (lcSumElementSize > rcSumElementSize)
+                rcSpace = CalculateSpace(leftColumn.Count, lcSumElementSize, lcSpace,
+                                         rightColumn.Count, rcSumElementSize, rcSpace);
             else
-            {
-                lcSpace = CalculateSpace(rightColumn.Count, rightColumn[0].Size.Height, rcSpace,
-                               leftColumn.Count, leftColumn[0].Size.Height, lcSpace);
-            }
+                lcSpace = CalculateSpace(rightColumn.Count, rcSumElementSize, rcSpace,
+                                         leftColumn.Count, lcSumElementSize, lcSpace);
 
             Building trPrev = null;
             trPrev = PositioningBuilding(trPrev, topRow, trInitialX, trInitialY, trSpace, true);
@@ -189,8 +190,8 @@ namespace CovidPropagationGraphicInterface
         {
             int space;
 
-            int size1 = count1 * elementSize1 + space1 * count1 - space1;
-            int size2 = count2 * elementSize2 + space2 * count2 - space2;
+            int size1 = elementSize1 + space1 * count1 - space1;
+            int size2 = elementSize2 + space2 * count2 - space2;
 
             int sizeDifference = size1 - size2;
             space = space2 + sizeDifference / (count2 - 1);
@@ -205,9 +206,9 @@ namespace CovidPropagationGraphicInterface
                 int y = initialY;
 
                 if (isRow)
-                    x = prev == null ? initialX : (int)prev.Location.X + b.Size.Width + space;
+                    x = prev == null ? initialX : (int)prev.Location.X + prev.Size.Width + space;
                 else
-                    y = prev == null ? initialY : (int)prev.Location.Y + b.Size.Height + space;
+                    y = prev == null ? initialY : (int)prev.Location.Y + prev.Size.Height + space;
 
                 b.Location = new Point(x, y);
                 prev = b;
@@ -248,14 +249,14 @@ namespace CovidPropagationGraphicInterface
 
             List<KeyValuePair<PointF, bool>> stops = new List<KeyValuePair<PointF, bool>>();
             KeyValuePair<PointF, bool> stop = new KeyValuePair<PointF, bool>(new PointF(xLeft, y), false);
-            KeyValuePair<PointF, bool> stop1 = new KeyValuePair<PointF, bool>(new PointF(xRight - GlobalVariables.bus_Size.Width, y), false);
+            KeyValuePair<PointF, bool> stop1 = new KeyValuePair<PointF, bool>(new PointF(xRight - GlobalVariables.bus_Size.Width, y), true);
             stops.Add(stop);
             stops.Add(stop1);
             busStops.Add(new BusStop(stops));
 
             List<KeyValuePair<PointF, bool>> stops1 = new List<KeyValuePair<PointF, bool>>();
             KeyValuePair<PointF, bool> stop2 = new KeyValuePair<PointF, bool>(new PointF(xRight - GlobalVariables.bus_Size.Width, y + GlobalVariables.bus_Size.Width), false);
-            KeyValuePair<PointF, bool> stop3 = new KeyValuePair<PointF, bool>(new PointF(xLeft, y + GlobalVariables.bus_Size.Width), false);
+            KeyValuePair<PointF, bool> stop3 = new KeyValuePair<PointF, bool>(new PointF(xLeft, y + GlobalVariables.bus_Size.Width), true);
             stops1.Add(stop2);
             stops1.Add(stop3);
             busStops.Add(new BusStop(stops1));
@@ -264,7 +265,7 @@ namespace CovidPropagationGraphicInterface
 
             List<Bus> horizontalBuses = new List<Bus>();
 
-            horizontalBuses.Add(new Bus(busLine, true));
+            horizontalBuses.Add(new Bus(busLine, false));
             //horizontalBuses.Add(new Bus(busLine, busLine., true));
             horizontalBuses.ForEach(b => Paint += b.Paint);
             buses.AddRange(horizontalBuses);

@@ -65,6 +65,7 @@
     <Compile Include="Classes\Building.cs" />
     <Compile Include="Classes\Buildingtype.cs" />
     <Compile Include="Classes\GlobalVariables.cs" />
+    <Compile Include="Classes\Legend.cs" />
     <Compile Include="Classes\Person\Day.cs" />
     <Compile Include="Classes\Person\Period.cs" />
     <Compile Include="Classes\Person\PersonState.cs" />

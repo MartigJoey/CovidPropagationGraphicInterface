@@ -1,5 +1,6 @@
 ﻿using CovidPropagationGraphicInterface.Classes;
 using CovidPropagationGraphicInterface.Classes.Vehicle;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -36,10 +37,9 @@ namespace CovidPropagationGraphicInterface
         public void NextStop()
         {
             _busStopIndex = _busLine.GetNextStopIndex(_busStopIndex);
-            _pointIndex = 0;
+            _pointIndex = 1;
             _destination = _busLine.GetCurrentStop(_busStopIndex).GetCurrentPoint(_pointIndex).Key;
-            _shouldRotate = true;
-            CalculateMovementSpeed();
+            CalculateMovementSpeed(_busLine.GetCurrentStop(_busStopIndex).GetThisPointLengthInPercent(_pointIndex));
         }
 
         public void NextPoint()
@@ -47,7 +47,32 @@ namespace CovidPropagationGraphicInterface
             _pointIndex = _busLine.GetCurrentStop(_busStopIndex).GetNextPointIndex(_pointIndex);
             _destination = _busLine.GetCurrentStop(_busStopIndex).GetCurrentPoint(_pointIndex).Key;
             _shouldRotate = true;
-            CalculateMovementSpeed();
+            CalculateMovementSpeed(_busLine.GetCurrentStop(_busStopIndex).GetThisPointLengthInPercent(_pointIndex));
+        }
+
+        protected void CalculateMovementSpeed(float busStopPercent)
+        {
+            float distanceX, distanceY, animationNb;
+
+            distanceX = (float)Math.Sqrt(Math.Pow(_destination.X - _location.X, 2));
+            distanceY = (float)Math.Sqrt(Math.Pow(_destination.Y - _location.Y, 2));
+
+            distanceX = _destination.X < _location.X ? distanceX * -1 : distanceX;
+            distanceY = _destination.Y < _location.Y ? distanceY * -1 : distanceY;
+
+            animationNb = (float)GlobalVariables.ANIMATION_PER_PERIOD / 100 * busStopPercent;
+
+            //Console.WriteLine(animationNb);
+
+            _movementX = distanceX / (float)Math.Round(animationNb, 0);
+            _movementY = distanceY / (float)Math.Round(animationNb, 0);
+
+            //Console.WriteLine(_location + " " + _destination);
+            //Console.WriteLine(distanceX + "  movementX: " + distanceX / animationNb);
+            //Console.WriteLine(distanceY + "  movementY: " + distanceY / animationNb);
+            //Console.WriteLine("movementX: " + _movementX + "  DistanceX:" + distanceX);
+            //Console.WriteLine("movementY: " + _movementY + "  DistanceY:"+ distanceY);
+            //Console.WriteLine("___________________________ " + animationNb);
         }
 
         private void Rotate()

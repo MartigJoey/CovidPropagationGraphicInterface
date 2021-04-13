@@ -28,7 +28,7 @@ namespace CovidPropagationGraphicInterface
         {
             _planning = planning;
             _state = state;
-            _color = Brushes.Blue;
+            _color = GlobalVariables.healthy_Person_Brush;
             _size = GlobalVariables.person_Size;
             _trajectory = new Trajectory();
             TeleportToLocation();

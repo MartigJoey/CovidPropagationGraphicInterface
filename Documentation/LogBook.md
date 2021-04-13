@@ -130,6 +130,33 @@
   - ![Positionnement des bâtiments](Medias/BuildingPositionnement.png)
   - Refactorisation
 
+# 05.04.2021
+- Modification du positionnement dynamique pour prendre la taille en compte.
+  - ![Positionnement des bâtiments](Medias/BuildingPositionnement2.png)
+- Création des bus
+  - Reflexion sur leur fonctionnement
+    - Créer un "arrêt" de bus pour chaque ligne et colonne.
+    - Les bus se garent là et se dirigent vers une zone
+
+# 10.04.2021
+- Création des bus
+  - Reflexion sur leur fonctionnement
+  - Idée 1:
+    - Les bus s'arrête aux arrêt et reparte selon un horaire fixe.
+    - Ils se situent au centre avec le reste du trafique.
+    - Le fait qu'ils se situent au centre risque de rendre la simulation illisible par le trop grand nombre de véhicules.
+    - ![Première idée de structure des bus Intérieur](Medias/Bus1.png)
+  - Idée 2:
+    - Cette structure permet de limiter le nombre d'entités au centre.
+    - Cependant la création de celle-ci semble extremement compliquée.
+    - Il semble aussi compliqué de l'implémenter correctement pour subvenir aux besoins de transports nécessaire au fonctionnement de la simulation
+    - ![Deuxième idée de structure des bus Exterieur](Medias/Bus2.png)
+  - Idée 3:
+    - Version simplifiée de l'idée 2
+    - Plutôt que d'avoir une grande quantité de voie. Simplement avoir une voie pour chaque ligne/Colonne et une voie les reliant toutes.
+    - ![Troisième idée de structure des bus Exterieur](Medias/Bus3.png)
+- Ajout d'une légende
+  - ![Légende de l'interface graphique](Medias/Legend.png)
 # 12.04.2021
 - Oubli de push une partie du travail effectué durant les vacances
   - Futur problèmes de conflits avec git prévu dans le code et logbook
@@ -165,3 +192,12 @@
       - ~~Allonger les trajet en bus pour qu'ils durent 2 périodes~~
       - Créer un système d'arrêt de bus qui ne dépend pas des période
         - Reprend la logique du planning --> jour --> période mais en simplifié
+- Discution du sujet du stage avec M. Mathieu par email
+# 13.04.2021
+- Création des trajets des bus
+  - Calcul de la vitesse en fonction du prochain stop sur la ligne indépendamment des période.
+  - Problème au niveau des points. Il saute le dernier. Peut être causé par le fait qu'il n'a pas le temps de se déplacer assez rapidement et se fait rattraper par le chronomètre des périodes.
+    - plus de 2 heures pour régler le problèmes
+    - Il s'agissait des déplacements qui étaient trop élevé pour correspondre au code qui détecte lorsque le bus est arrivé à destination.
+  - Le bus se calcule sa vitesse de la même manière pour les longues et courte distance. Il va donc très(trop) vite dans les longues distances et très lentement dans les courtes
+  - Modification du code pour choisir la vitesse.

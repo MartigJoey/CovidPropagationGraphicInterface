@@ -33,25 +33,24 @@ namespace CovidPropagationGraphicInterface
 
             switch (Type)
             {
+                default:
                 case BuildingType.Home:
-                    _color = Pens.Blue;
+                    _color = GlobalVariables.home_Pen_Color;
                     break;
                 case BuildingType.School:
-                    _color = Pens.Beige;
+                    _color = GlobalVariables.school_Pen_Color;
                     break;
                 case BuildingType.Hospital:
-                    _color = Pens.Red;
+                    _color = GlobalVariables.hospital_Pen_Color;
                     break;
                 case BuildingType.Company:
-                    _color = Pens.Yellow;
+                    _color = GlobalVariables.company_Pen_Color;
                     break;
                 case BuildingType.Supermarket:
-                    _color = Pens.Green;
+                    _color = GlobalVariables.supermarket_Pen_Color;
                     break;
                 case BuildingType.Restaurant:
-                    _color = Pens.Gold;
-                    break;
-                default:
+                    _color = GlobalVariables.restaurant_Pen_Color;
                     break;
             }
         }
