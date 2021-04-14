@@ -228,5 +228,4 @@
     - Résumé logBook
     - Activités
   - Correction d'orthographe
-- Bus Insertion des individus
-  - 
+- Changement de la taille des éléments en fonction de la taille de la forme.

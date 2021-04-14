@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace CovidPropagationGraphicInterface.Classes
 {
@@ -24,8 +19,31 @@ namespace CovidPropagationGraphicInterface.Classes
 
         public const int MAX_PERSONS_TO_DISPLAY_TRAJECTORY = 30;
 
+        // Graphical Interface
+        // Size
+        public static Size interface_Size_Without_Legend = new Size(0, 0);
+        private static Size interface_Size = new Size(0, 0);
+        private static Size min_Interface_Size = new Size(400, 400);
+        private static Size max_Interface_Size = new Size(1000, 1000);
+        public static Size Interface_Size { get => interface_Size; set => interface_Size = CheckSize(value); }
+        private static Size CheckSize(Size value)
+        {
+            if (value.Width < min_Interface_Size.Width)
+                value.Width = min_Interface_Size.Width;
+
+            if (value.Height < min_Interface_Size.Height)
+                value.Height = min_Interface_Size.Height;
+
+            if (value.Width > max_Interface_Size.Width)
+                value.Width = max_Interface_Size.Width;
+
+            if (value.Height > max_Interface_Size.Height)
+                value.Height = max_Interface_Size.Height;
+
+            return value;
+        }
         // Buildings 
-            // Colors
+        // Colors
         public readonly static Pen home_Pen_Color = Pens.Blue;
         public readonly static Pen school_Pen_Color = Pens.Beige;
         public readonly static Pen hospital_Pen_Color = Pens.Red;
@@ -34,7 +52,7 @@ namespace CovidPropagationGraphicInterface.Classes
         public readonly static Pen restaurant_Pen_Color = Pens.LightGreen;
 
         // Size
-        public readonly static Size DEFAULT_BUILDING_SIZE = new Size(50, 50);
+        public readonly static Size default_building_size = new Size(50, 50); // %
 
         // Persons 
             // Colors
@@ -42,8 +60,9 @@ namespace CovidPropagationGraphicInterface.Classes
         public static Brush Infected_Person_Brush = Brushes.Red;
         public static Brush Asymptomatic_Person_Brush = Brushes.Green;
 
-            // Size
-        public static Size person_Size = new Size(6, 6);
+        // Size
+        public static Size person_default_Size = new Size(6, 6);
+        public static Size person_Size = new Size(3, 3); // %
 
         // Vehicles 
             // Colors

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using CovidPropagationGraphicInterface.Classes;
@@ -23,7 +19,7 @@ namespace CovidPropagationGraphicInterface
                                         rdm.Next(_location.Y + GlobalVariables.person_Size.Height, _location.Y + _size.Height - GlobalVariables.person_Size.Height)
                                     ); 
         }
-        public Size Size { get => _size; }
+        public Size Size { get => _size; set => _size = value; }
         internal BuildingType Type { get => _type; set => _type = value; }
 
         public Building(Size size, BuildingType type)

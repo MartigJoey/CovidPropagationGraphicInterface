@@ -91,9 +91,12 @@ namespace CovidPropagationGraphicInterface.Classes.Vehicle
 
         private List<BusStopPoint> CreateStops(PointF firstStopPosition, PointF secondStopPosition, bool isVertical)
         {
+            int centerBusStopDurationInPercent = 25;
+            int centerBusLineDurationInPercent = 75;
+
             List<BusStopPoint> stops = new List<BusStopPoint>();
-            BusStopPoint firstStop = new BusStopPoint(firstStopPosition, isVertical, 75);
-            BusStopPoint secondStop = new BusStopPoint(secondStopPosition, isVertical, 25);
+            BusStopPoint firstStop = new BusStopPoint(firstStopPosition, isVertical, centerBusLineDurationInPercent);
+            BusStopPoint secondStop = new BusStopPoint(secondStopPosition, isVertical, centerBusStopDurationInPercent);
             stops.Add(firstStop);
             stops.Add(secondStop);
             return stops;
@@ -101,26 +104,29 @@ namespace CovidPropagationGraphicInterface.Classes.Vehicle
 
         private List<Bus> CreatePerimeterBusLine(Point perimeterTopLeft, Point perimeterBottomRight, int centerX, int centerY, bool isPerimeterIn)
         {
+            int perimeterBusStopDurationInPercent = 20;
+            int perimeterBusLineDurationInPercent = 80;
+
             List<BusStop> busStops = new List<BusStop>();
 
             List<BusStopPoint> stopsTopRight = new List<BusStopPoint>();
-            BusStopPoint stopTopCenter = new BusStopPoint(new PointF(centerX, perimeterTopLeft.Y - GlobalVariables.bus_Size.Width - 1), false, 20);
-            BusStopPoint stopTopRight = new BusStopPoint(new PointF(perimeterBottomRight.X, perimeterTopLeft.Y - GlobalVariables.bus_Size.Width - 1), isPerimeterIn ? false : true, 80);
+            BusStopPoint stopTopCenter = new BusStopPoint(new PointF(centerX, perimeterTopLeft.Y - GlobalVariables.bus_Size.Width - 1), false, perimeterBusStopDurationInPercent);
+            BusStopPoint stopTopRight = new BusStopPoint(new PointF(perimeterBottomRight.X, perimeterTopLeft.Y - GlobalVariables.bus_Size.Width - 1), isPerimeterIn ? false : true, perimeterBusLineDurationInPercent);
 
 
             List<BusStopPoint> stopsBottomRight = new List<BusStopPoint>();
-            BusStopPoint stopMiddleRight = new BusStopPoint(new PointF(perimeterBottomRight.X, centerY), true, 20);
-            BusStopPoint stopBottomRight = new BusStopPoint(new PointF(perimeterBottomRight.X, perimeterBottomRight.Y), isPerimeterIn ? true : false, 80);
+            BusStopPoint stopMiddleRight = new BusStopPoint(new PointF(perimeterBottomRight.X, centerY), true, perimeterBusStopDurationInPercent);
+            BusStopPoint stopBottomRight = new BusStopPoint(new PointF(perimeterBottomRight.X, perimeterBottomRight.Y), isPerimeterIn ? true : false, perimeterBusLineDurationInPercent);
 
 
             List<BusStopPoint> stopsBottomLeft = new List<BusStopPoint>();
-            BusStopPoint stopBottomCenter = new BusStopPoint(new PointF(centerX, perimeterBottomRight.Y), false, 20);
-            BusStopPoint stopBottomLeft = new BusStopPoint(new PointF(perimeterTopLeft.X - GlobalVariables.bus_Size.Width - 1, perimeterBottomRight.Y), isPerimeterIn ? false : true, 80);
+            BusStopPoint stopBottomCenter = new BusStopPoint(new PointF(centerX, perimeterBottomRight.Y), false, perimeterBusStopDurationInPercent);
+            BusStopPoint stopBottomLeft = new BusStopPoint(new PointF(perimeterTopLeft.X - GlobalVariables.bus_Size.Width - 1, perimeterBottomRight.Y), isPerimeterIn ? false : true, perimeterBusLineDurationInPercent);
 
 
             List<BusStopPoint> stopsTopLeft = new List<BusStopPoint>();
-            BusStopPoint stopLeftCenter = new BusStopPoint(new PointF(perimeterTopLeft.X - GlobalVariables.bus_Size.Width - 1, centerY), true, 20);
-            BusStopPoint stopTopLeft = new BusStopPoint(new PointF(perimeterTopLeft.X - GlobalVariables.bus_Size.Width - 1, perimeterTopLeft.Y - GlobalVariables.bus_Size.Width - 1), isPerimeterIn ? true : false, 80);
+            BusStopPoint stopLeftCenter = new BusStopPoint(new PointF(perimeterTopLeft.X - GlobalVariables.bus_Size.Width - 1, centerY), true, perimeterBusStopDurationInPercent);
+            BusStopPoint stopTopLeft = new BusStopPoint(new PointF(perimeterTopLeft.X - GlobalVariables.bus_Size.Width - 1, perimeterTopLeft.Y - GlobalVariables.bus_Size.Width - 1), isPerimeterIn ? true : false, perimeterBusLineDurationInPercent);
 
 
             stopsTopRight.Add(stopTopCenter);

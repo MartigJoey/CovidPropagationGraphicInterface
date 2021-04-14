@@ -44,6 +44,7 @@ namespace CovidPropagationGraphicInterface
                     _trajectory.SetTrajectory(_location, carDestination);
                     break;
                 case Bus bus:
+                    // If Bus empty, Find bus and initialize
                     TeleportToLocation(bus.Inside);// Remplacer par un déplacement
                     _trajectory.Enabled = false;
                     break;
@@ -63,6 +64,7 @@ namespace CovidPropagationGraphicInterface
                     _location = car.Inside;
                     break;
                 case Bus bus:
+                    TeleportToLocation(bus.Inside);
                     break;
                 default:
                     _location.X += _movementX;

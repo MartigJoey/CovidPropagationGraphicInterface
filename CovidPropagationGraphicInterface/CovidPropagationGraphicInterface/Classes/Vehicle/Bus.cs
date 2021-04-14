@@ -1,7 +1,6 @@
 ﻿using CovidPropagationGraphicInterface.Classes;
 using CovidPropagationGraphicInterface.Classes.Vehicle;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 

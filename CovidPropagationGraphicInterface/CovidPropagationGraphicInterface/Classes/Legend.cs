@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CovidPropagationGraphicInterface.Classes
@@ -28,7 +24,7 @@ namespace CovidPropagationGraphicInterface.Classes
             _location = location;
             stringBrush = new SolidBrush(Color.Black);
             stringFont = new Font("Arial", 14);
-            buildingsSize = GlobalVariables.DEFAULT_BUILDING_SIZE;
+            buildingsSize = GlobalVariables.default_building_size;
             personsSize = GlobalVariables.person_Size;
             vehiclesSize = GlobalVariables.car_Size;
             elementLocation = _location;

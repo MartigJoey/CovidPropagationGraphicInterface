@@ -40,7 +40,7 @@ namespace CovidPropagationGraphicInterface
 
         public virtual void SetDestination(PointF destination)
         {
-            _destination = destination; 
+            _destination = destination;
             CalculateMovementSpeed();
         }
 

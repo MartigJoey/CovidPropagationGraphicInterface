@@ -64,7 +64,7 @@ namespace CovidPropagationGraphicInterface
             // 
             this.graphicInterface.Location = new System.Drawing.Point(12, 32);
             this.graphicInterface.Name = "graphicInterface";
-            this.graphicInterface.Size = new System.Drawing.Size(992, 629);
+            this.graphicInterface.Size = new System.Drawing.Size(216, 259);
             this.graphicInterface.TabIndex = 0;
             this.graphicInterface.Text = "graphicInterface";
             // 

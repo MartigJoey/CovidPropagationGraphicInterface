@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using CovidPropagationGraphicInterface.Classes;
-using CovidPropagationGraphicInterface.Classes.Vehicle;
 
 namespace CovidPropagationGraphicInterface
 {
@@ -30,8 +26,8 @@ namespace CovidPropagationGraphicInterface
         public GraphicInterface()
         {
             DoubleBuffered = true;
-            clock = new Clock(new Point(750, 10));
-            legend = new Legend(new Point(750, 60));
+            clock = new Clock(new Point(750, 10));                  // %
+            legend = new Legend(new Point(750, 60));                // %
             Paint += clock.Paint;
             Paint += legend.Paint;
             animationTimer = new Timer();

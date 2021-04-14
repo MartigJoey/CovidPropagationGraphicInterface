@@ -12,88 +12,183 @@ namespace CovidPropagationGraphicInterface.Classes
         private Point _perimeterZoneTopLeft;
         private Point _perimeterZoneBottomRight;
 
+        private List<Building> _topRow;
+        private List<Building> _leftColumn;
+        private List<Building> _rightColumn;
+        private List<Building> _bottomRow;
+
         internal Point CenterZoneTopLeft { get => _centerZoneTopLeft.Clone(); }
         internal Point CenterZoneBottomRight { get => _centerZoneBottomRight.Clone(); }
         internal Point PerimeterZoneTopLeft { get => _perimeterZoneTopLeft.Clone(); }
         internal Point PerimeterZoneBottomRight { get => _perimeterZoneBottomRight.Clone(); }
+        internal List<Building> Buildings { get => _buildings; }
 
-        public BuildingGenerator(List<Building> buildings)
+        public BuildingGenerator()
         {
-            _buildings = buildings;
+            _buildings = GenerateBuildings();
             PositioningBuildings();
         }
-        private void PositioningBuildings()
+        /// <summary>
+        /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
+        /// lors du travail de diplome pour permettre la création de batiement par la simulation. ⚠️
+        /// </summary>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        private List<Building> GenerateBuildings()
         {
-            List<Building> topRow = new List<Building>(); int trInitialX = 90, trInitialY = 40, trSpace = 10;
+            List<Building> buildings = new List<Building>();
+            int nbtotalPerimeterBusLine = 6;
 
-            List<Building> leftColumn = new List<Building>(); int lcInitialX = 40, lcInitialY = 90, lcSpace = 10;
-            List<Building> rightColumn = new List<Building>(); int rcInitialX = 20, rcInitialY = 90, rcSpace = 10;
+            int topRowSizeWidth;
+            int bottomRowSizeWidth;
+            int sizeWidth;
+            float differenceWidth;
 
-            List<Building> bottomRow = new List<Building>(); int brInitialX = 90, brInitialY = 30, brSpace = 10;
+            int leftColumnSizeHeight;
+            int rightColumnSizeHeight;
+            int sizeHeight;
+            float differenceHeight;
 
-            topRow = (from building in _buildings
-                      where building.Type == BuildingType.Home
-                      select building).ToList();
+            // ⚠️
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
 
-            leftColumn = (from building in _buildings
-                          where building.Type == BuildingType.Restaurant || building.Type == BuildingType.Supermarket
-                          select building).ToList();
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
 
-            rightColumn = (from building in _buildings
-                           where building.Type == BuildingType.Hospital || building.Type == BuildingType.School
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
+
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
+            // ⚠️
+
+            _topRow = (from building in buildings
+                       where building.Type == BuildingType.Home
+                       select building).ToList();
+
+            _leftColumn = (from building in buildings
+                           where building.Type == BuildingType.Restaurant || building.Type == BuildingType.Supermarket
                            select building).ToList();
 
-            bottomRow = (from building in _buildings
-                         where building.Type == BuildingType.Company
-                         select building).ToList();
+            _rightColumn = (from building in buildings
+                            where building.Type == BuildingType.Hospital || building.Type == BuildingType.School
+                            select building).ToList();
+
+            _bottomRow = (from building in buildings
+                          where building.Type == BuildingType.Company
+                          select building).ToList();
+
+            topRowSizeWidth = _topRow.Sum(b => b.Size.Width);
+            bottomRowSizeWidth = _bottomRow.Sum(b => b.Size.Width);
+            sizeWidth = topRowSizeWidth > bottomRowSizeWidth ? topRowSizeWidth : bottomRowSizeWidth;
+            sizeWidth += _leftColumn.Max(b => b.Size.Width);
+            sizeWidth += _rightColumn.Max(b => b.Size.Width);
+            sizeWidth += GlobalVariables.bus_Size.Width * nbtotalPerimeterBusLine;
+            differenceWidth = sizeWidth - GlobalVariables.interface_Size_Without_Legend.Width;
+
+            leftColumnSizeHeight = _leftColumn.Sum(b => b.Size.Height);
+            rightColumnSizeHeight = _rightColumn.Sum(b => b.Size.Height);
+            sizeHeight = leftColumnSizeHeight > rightColumnSizeHeight ? leftColumnSizeHeight : rightColumnSizeHeight;
+            sizeHeight += _topRow.Max(b => b.Size.Height);
+            sizeHeight += _bottomRow.Max(b => b.Size.Height);
+            sizeHeight += GlobalVariables.bus_Size.Width * nbtotalPerimeterBusLine;
+            differenceHeight = sizeHeight - GlobalVariables.interface_Size_Without_Legend.Height;
+
+            float sizeChangeInPercentWidth = differenceWidth / sizeWidth * 100f * -1;
+            float sizeChangeInPercentHeight = differenceHeight / sizeHeight * 100f * -1;
+
+            buildings.ForEach(b => {
+                SizeF newSize = new SizeF(b.Size.Width / 100f * sizeChangeInPercentWidth,
+                                          b.Size.Height / 100f * sizeChangeInPercentHeight);
+                b.Size = Size.Add(b.Size, Size.Round(newSize));
+            });
+
+            System.Console.WriteLine(sizeHeight);
+            System.Console.WriteLine(differenceHeight);
+            System.Console.WriteLine(sizeChangeInPercentHeight);
+
+            return buildings;
+        }
+
+        private void PositioningBuildings()
+        {
+            int spaceXY = 10;
+            int numberOfBusLine = 2;
+
+            int leftColumnInitialX = GlobalVariables.bus_Size.Width * numberOfBusLine + spaceXY;
+            int topRowInitialX = _leftColumn.Max(b => b.Size.Width) + leftColumnInitialX; 
+            
+            int topRowInitialY = GlobalVariables.bus_Size.Width * numberOfBusLine + spaceXY;
+            int leftColumnInitialY = _topRow.Max(b => b.Size.Height) + topRowInitialY;
+            
+            int rightColumnInitialY = leftColumnInitialY;
+            int rightColumnInitialX;
+            int bottomRowInitialX = topRowInitialX;
+            int bottomRowInitialY;
+
+            int topRowSpace = spaceXY;
+            int leftColumnSpace = spaceXY;
+            int rightColumnSpace = spaceXY;
+            int bottomRowSpace = spaceXY;
 
             // Rows space
-            int trSumElementSize = topRow.Sum(b => b.Size.Width);
-            int brSumElementSize = bottomRow.Sum(b => b.Size.Width);
+            int topRowSumElementSize = _topRow.Sum(b => b.Size.Width);
+            int bottomRowSumElementSize = _bottomRow.Sum(b => b.Size.Width);
 
-            if (trSumElementSize > brSumElementSize)
+            if (topRowSumElementSize > bottomRowSumElementSize)
             {
-                brSpace = CalculateSpace(topRow.Count, trSumElementSize, trSpace,
-                                         bottomRow.Count, brSumElementSize, brSpace);
+                bottomRowSpace = CalculateSpace(_topRow.Count, topRowSumElementSize, topRowSpace,
+                                         _bottomRow.Count, bottomRowSumElementSize, bottomRowSpace);
             }else
             {
-                trSpace = CalculateSpace(bottomRow.Count, brSumElementSize, brSpace,
-                                             topRow.Count, trSumElementSize, trSpace);
+                topRowSpace = CalculateSpace(_bottomRow.Count, bottomRowSumElementSize, bottomRowSpace,
+                                             _topRow.Count, topRowSumElementSize, topRowSpace);
             }
             // Columns space
-            int lcSumElementSize = leftColumn.Sum(b => b.Size.Height);
-            int rcSumElementSize = rightColumn.Sum(b => b.Size.Height);
+            int lcSumElementSize = _leftColumn.Sum(b => b.Size.Height);
+            int rcSumElementSize = _rightColumn.Sum(b => b.Size.Height);
 
             if (lcSumElementSize > rcSumElementSize)
             {
-                rcSpace = CalculateSpace(leftColumn.Count, lcSumElementSize, lcSpace,
-                                         rightColumn.Count, rcSumElementSize, rcSpace);
+                rightColumnSpace = CalculateSpace(_leftColumn.Count, lcSumElementSize, leftColumnSpace,
+                                                  _rightColumn.Count, rcSumElementSize, rightColumnSpace);
             }else
             {
-                lcSpace = CalculateSpace(rightColumn.Count, rcSumElementSize, rcSpace,
-                                         leftColumn.Count, lcSumElementSize, lcSpace);
+                leftColumnSpace = CalculateSpace(_rightColumn.Count, rcSumElementSize, rightColumnSpace,
+                                                 _leftColumn.Count, lcSumElementSize, leftColumnSpace);
             }
 
-            Building trPrev = PositioningBuilding(topRow, trInitialX, trInitialY, trSpace, true);
-            rcInitialX = (int)trPrev.Location.X + trPrev.Size.Width;
+            Building topRowPrev = PositioningBuilding(_topRow, topRowInitialX, topRowInitialY, topRowSpace, true);
+            rightColumnInitialX = (int)topRowPrev.Location.X + topRowPrev.Size.Width;
 
-            Building lcPrev = PositioningBuilding(leftColumn, lcInitialX, lcInitialY, lcSpace, false);
-            brInitialY = (int)lcPrev.Location.Y + lcPrev.Size.Height;
+            Building leftColumnPrev = PositioningBuilding(_leftColumn, leftColumnInitialX, leftColumnInitialY, leftColumnSpace, false);
+            bottomRowInitialY = (int)leftColumnPrev.Location.Y + leftColumnPrev.Size.Height;
 
-            Building rcPrev = PositioningBuilding(rightColumn, rcInitialX, rcInitialY, rcSpace, false);
-            Building brPrev = PositioningBuilding(bottomRow, brInitialX, brInitialY, brSpace, true);
+            Building rightColumnPrev = PositioningBuilding(_rightColumn, rightColumnInitialX, rightColumnInitialY, rightColumnSpace, false);
+            Building bottomRowPrev = PositioningBuilding(_bottomRow, bottomRowInitialX, bottomRowInitialY, bottomRowSpace, true);
 
-            int centerZoneTopLeftX = leftColumn.Max(b => b.Size.Width) + (int)leftColumn[0].Location.X;
-            int centerZoneTopLeftY = topRow.Max(b => b.Size.Height) + (int)topRow[0].Location.Y;
+            int centerZoneTopLeftX = _leftColumn.Max(b => b.Size.Width) + (int)_leftColumn[0].Location.X;
+            int centerZoneTopLeftY = _topRow.Max(b => b.Size.Height) + (int)_topRow[0].Location.Y;
             _centerZoneTopLeft = new Point(centerZoneTopLeftX, centerZoneTopLeftY);
-            _centerZoneBottomRight = new Point((int)rightColumn[0].Location.X, (int)bottomRow[0].Location.Y);
+            _centerZoneBottomRight = new Point((int)_rightColumn[0].Location.X, (int)_bottomRow[0].Location.Y);
 
-            int perimeterZoneBottomRightX = (int)rightColumn[0].Location.X + rightColumn.Max(b => b.Size.Width);
-            int perimeterZoneBottomRightY = (int)bottomRow[0].Location.Y + bottomRow.Max(b => b.Size.Height);
-            _perimeterZoneTopLeft = new Point((int)leftColumn[0].Location.X, (int)topRow[0].Location.Y);
+            int perimeterZoneBottomRightX = (int)_rightColumn[0].Location.X + _rightColumn.Max(b => b.Size.Width);
+            int perimeterZoneBottomRightY = (int)_bottomRow[0].Location.Y + _bottomRow.Max(b => b.Size.Height);
+            _perimeterZoneTopLeft = new Point((int)_leftColumn[0].Location.X, (int)_topRow[0].Location.Y);
             _perimeterZoneBottomRight = new Point(perimeterZoneBottomRightX, perimeterZoneBottomRightY);
-
-            //CreateBusLines(CenterZoneTopLeft, CenterZoneBottomRight, PerimeterZoneTopLeft, PerimeterZoneBottomRight);
         }
 
         private int CalculateSpace(int count1, int elementSize1, int space1,

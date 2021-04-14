@@ -3,12 +3,7 @@ using CovidPropagationGraphicInterface.Classes.Person;
 using CovidPropagationGraphicInterface.Classes.Vehicle;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CovidPropagationGraphicInterface
@@ -16,28 +11,32 @@ namespace CovidPropagationGraphicInterface
     public partial class FrmMain : Form
     {
         List<Person> dummyPersons;
-        List<Building> dummyBuilding;
         List<Vehicle> dummyVehicle;
         List<Bus> dummyBus;
 
         BuildingGenerator buildingGenerator;
         BusLineGenerator busLineGenerator;
-        State testChange;
+        State testChange; // test le changement d'état d'un individus
 
         public FrmMain()
         {
             InitializeComponent();
+            Size oneThird = new Size(graphicInterface.Size.Width / 3, 0);
+            GlobalVariables.Interface_Size = graphicInterface.Size;
+            graphicInterface.Size = GlobalVariables.Interface_Size;
+            GlobalVariables.interface_Size_Without_Legend = Size.Subtract(graphicInterface.Size, oneThird);
+
             timer.Tick += new EventHandler(graphicInterface.OnTick);
             timer.Interval = GlobalVariables.TIMER_INTERVAL;
             TimeManager.Init();
-            dummyBuilding = GenerateDummyBuildings();
+            buildingGenerator = new BuildingGenerator();
             dummyVehicle = GenerateDummyVehicle(31);
             dummyPersons = GenerateDummyPersons(31);
-            buildingGenerator = new BuildingGenerator(dummyBuilding);
-            busLineGenerator = new BusLineGenerator(buildingGenerator.CenterZoneTopLeft, buildingGenerator.CenterZoneBottomRight, buildingGenerator.PerimeterZoneTopLeft, buildingGenerator.PerimeterZoneBottomRight);
+            busLineGenerator = new BusLineGenerator(buildingGenerator.CenterZoneTopLeft, buildingGenerator.CenterZoneBottomRight, 
+                                                    buildingGenerator.PerimeterZoneTopLeft, buildingGenerator.PerimeterZoneBottomRight);
 
             dummyBus = busLineGenerator.Buses;
-            graphicInterface.Generate(dummyPersons, dummyBuilding, dummyVehicle, dummyBus);
+            graphicInterface.Generate(dummyPersons, buildingGenerator.Buildings, dummyVehicle, dummyBus);
         }
 
         private void Start_Click(object sender, EventArgs e)
@@ -51,48 +50,6 @@ namespace CovidPropagationGraphicInterface
             timer.Enabled = false;
             testChange.CurrentState = PersonState.Infected;
             graphicInterface.TimerStop();
-        }
-
-        /// <summary>
-        /// ⚠️ Ce code est utilisé uniquement dans le cadre du stage et sera supprimé 
-        /// lors du travail de diplome pour permettre la création de batiement par la simulation. ⚠️
-        /// </summary>
-        /// <param name="quantity"></param>
-        /// <returns></returns>
-        private List<Building> GenerateDummyBuildings()
-        {
-            List<Building> buildings = new List<Building>();
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Home));
-
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Hospital));
-                                                   
-            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.School));
-
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Supermarket));
-
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Restaurant));
-
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
-            buildings.Add(new Building(new Size(50, 50), BuildingType.Company));
-
-            return buildings;
         }
 
         /// <summary>
@@ -125,10 +82,10 @@ namespace CovidPropagationGraphicInterface
         {
             Classes.Person.Day[] day = new Classes.Person.Day[GlobalVariables.NUMBER_OF_DAY];
 
-            int nbBuilding = dummyBuilding.CountFromZero();
-            Building firstactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
-            Building secondactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
-            Building thirdactivity = dummyBuilding[rdm.Next(0, nbBuilding)];
+            int nbBuilding = buildingGenerator.Buildings.CountFromZero();
+            Building firstactivity = buildingGenerator.Buildings[rdm.Next(0, nbBuilding)];
+            Building secondactivity = buildingGenerator.Buildings[rdm.Next(0, nbBuilding)];
+            Building thirdactivity = buildingGenerator.Buildings[rdm.Next(0, nbBuilding)];
             for (int i = 0; i < GlobalVariables.NUMBER_OF_DAY; i++)
             {
                 Period[] period = new Period[GlobalVariables.NUMBER_OF_PERIODS];
