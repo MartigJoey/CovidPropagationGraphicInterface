@@ -227,5 +227,8 @@
   - Synthèse des activités
     - Résumé logBook
     - Activités
-  - Correction d'orthographe
+  - Correction de l'orthographe
 - Changement de la taille des éléments en fonction de la taille de la forme.
+  - Les batiments changent de taille en fonction de la taille de la form
+  - Bug concernant la hauteur. Ne fonctionne pas correctement si la taille est insuffisante.
+    - La taille semble être correcte en donnée mais pas à l'affichage.
