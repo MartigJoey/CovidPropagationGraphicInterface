@@ -24,19 +24,20 @@ namespace CovidPropagationGraphicInterface.Classes.Vehicle
             CreateBusLines(CenterZoneTopLeft, CenterZoneBottomRight, PerimeterZoneTopLeft, PerimeterZoneBottomRight);
         }
 
-        public Bus GetBusToGoLeft()
+        // Créer sélection dynamique
+        public Bus GetHorizontalBusToGoLeft()
         {
             return _horizontalBuses.OrderBy(b => b.Location.X).Last();
         }
-        public Bus GetBusToGoRight()
+        public Bus GetHorizontalBusToGoRight()
         {
             return _horizontalBuses.OrderBy(b => b.Location.X).First();
         }
-        public Bus GetBusToGoDown()
+        public Bus GetVerticalBusToGoDown()
         {
             return _horizontalBuses.OrderBy(b => b.Location.Y).First();
         }
-        public Bus GetBusToGoUp()
+        public Bus GetVerticalBusToGoUp()
         {
             return _horizontalBuses.OrderBy(b => b.Location.Y).Last();
         }
