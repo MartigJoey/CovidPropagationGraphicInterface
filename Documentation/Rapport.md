@@ -209,6 +209,8 @@ Pour simplifier la compréhension d'un utilisateur, j'ai ajouté une légende co
 ### 7.2.8. `Méthodes d'extensions`
 Pour simplifier mon travail et surtout pour simplifier le code, j'ai ajouté des méthodes d'extensions qui permettent de modifier des éléments déjà existants et d'y ajouter une action. Action qui dans mon cas permet d'écrire en une ligne ce qui en demanderait plusieurs ou simplement de rendre la lecture du code plus agréable.
 
+Pour l'utilisation des graphiques, à la place de créer un nouvel oubjet s'occupant d'attribuer les données et de les gérer, j'ai créé des méthodes d'extensions qui permettent l'assignations de valeur. En plus de simplifier le code, ça évite de polluer le projet avec des classes qui ne servent que d'intermediaire au lancement.
+
 # 8. `Planning`
 Le planning n'est pas nécessaire pour ce projet cependant, je m'en suis créé un dans le but de m'aider à visualiser le travail à effectuer ainsi qu'à définir par quoi je devrais commencer.
 
@@ -218,7 +220,7 @@ J'ai prévu de commencer par coder la base de chaque objet et donc de les affich
 <center style="font-size: 11px">Figure 7: Planning prévisionnel du projet</center>
 
 ## 8.2. `Effectif`
-La prévision faite pour le début du projet était correcte à l'exception que je suis allé plus vite que prévu dans certaine tâche. En plus de cela, j'ai travaillé durant les vacances ce qui n'était pas prévu dans le planning. La suite est beaucoup moins structurée que dans les prévisions, mais ça me semble parfaitement normal. C'est uniquement dû au fait qu'en codant une certaine section il est possible de voir des problèmes qui se situent dans d'autres sections m'obligeant à faire des modifications. Le projet a tout de même pu atteindre un niveau suffisant d'après moi.
+La prévision faite pour le début du projet était correcte à l'exception que je suis allé plus vite que prévu dans certaine tâche. En plus de cela, j'ai travaillé durant les vacances ce qui n'était pas prévu dans le planning. La suite est beaucoup moins structurée que dans les prévisions, mais ça me semble parfaitement normal. C'est uniquement dû au fait qu'en codant une certaine section il est possible de voir des problèmes qui se situent dans d'autres sections m'obligeant à faire des modifications. Le projet a tout de même pu atteindre un niveau suffisant d'après moi. J'ai aussi ajouté des tâches qui n'étaient pas prévues, mais qui ont été ajoutées durant le projet.
 
 ![Planning effectif](Medias/Rapport/PlanningEffectif.png)
 <center style="font-size: 11px">Figure 8: Planning effectif du projet</center>

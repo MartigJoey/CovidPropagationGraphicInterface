@@ -242,4 +242,16 @@
   - Simplifie le resize du control
 - Extraction de la légende du control "Graphic interface" à une form extern.
   - Léger problème de nommage causant un bug entre FrmLegend.cs et Legend.cs. Réglé en recréant la form et la classe et en nommant FrmLegend dès le départ.
+- Discussion contenu présentation avec Mr. Garcia
+- Nettoyage de la salle Tech 2 en vue des présentation.
 - Intégration des graphiques
+  - Ajout d'une methode d'extensions pour insérer les données dans les graphiques.
+- Modification finale du planning
+  - Ajouts de tâches supplémentaires effectuées.
+    - Horloge
+    - Légendes
+    - Responsivité
+    - Graphiques
+      - Cartésien
+      - Camembert
+- Discussions avec Mr. Mathieu concernant la présentation et le contenu du rapport.

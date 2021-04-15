@@ -7,9 +7,12 @@ namespace CovidPropagationGraphicInterface
     class Car : Vehicle
     {
         private bool _isDisplayed;
+
+        public bool IsDisplayed { get => _isDisplayed; set => _isDisplayed = value; }
+
         public Car(PointF location) : base(location, GlobalVariables.car_Size, GlobalVariables.CAR_MAX_PERSON, GlobalVariables.car_Pen)
         {
-            _isDisplayed = false;
+            IsDisplayed = false;
         }
         public Car() : this(new PointF(0, 0))
         {
@@ -18,7 +21,7 @@ namespace CovidPropagationGraphicInterface
 
         public override void SetDestination(PointF destination)
         {
-            _isDisplayed = true;
+            IsDisplayed = true;
             _destination = destination;
             CalculateMovementSpeed();
         }
@@ -29,12 +32,12 @@ namespace CovidPropagationGraphicInterface
             _location.Y += _movementY;
 
             if (Point.Round(_location).Equals(Point.Round(_destination)))
-                _isDisplayed = false;
+                IsDisplayed = false;
         }
 
         public override void Paint(object sender, PaintEventArgs e)
         {
-            if (_isDisplayed)
+            if (IsDisplayed)
                 e.Graphics.DrawRectangle(_color, new Rectangle(Point.Round(_location), _size));
         }
     }

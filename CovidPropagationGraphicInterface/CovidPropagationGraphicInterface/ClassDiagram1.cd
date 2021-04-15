@@ -58,21 +58,10 @@
   </Class>
   <Class Name="CovidPropagationGraphicInterface.GraphicInterface">
     <Position X="13.5" Y="1.5" Width="1.5" />
-    <AssociationLine Name="clock" Type="CovidPropagationGraphicInterface.Clock" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="13.688" Y="5.752" />
-        <Point X="13.688" Y="6.944" />
-        <Point X="12.5" Y="6.944" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EACCAACAAAAASAIAAAAAAACAAAIQiAAIAUACEEAAAAA=</HashCode>
+      <HashCode>EACCAACAAAAASAIAAAAAAACAAAIQiAAIAQAAEEAAAAA=</HashCode>
       <FileName>Classes\GraphicInterface.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="legend" />
-      <Field Name="clock" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="persons" />
       <Field Name="buildings" />
@@ -175,35 +164,28 @@
   <Class Name="CovidPropagationGraphicInterface.Classes.BuildingGenerator">
     <Position X="26.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAggEAABABAAIABAAQAAAAAAAEAAAAAAMAAIAAAAA=</HashCode>
+      <HashCode>gAAAghEAABCBEAIABAAQAAAAABAEAAAAgAMAAIAAAAA=</HashCode>
       <FileName>Classes\BuildingGenerator.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.Classes.GlobalVariables">
     <Position X="7.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>oAAIAIAAgAABAQAEAoAQACEEIIABAAAQAAAQQQoESAQ=</HashCode>
+      <HashCode>oAAIAIAAgAEBIQAEAoDQACEAIIABAAAQAAGQYQoESAw=</HashCode>
       <FileName>Classes\GlobalVariables.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.Classes.Legend">
     <Position X="11" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAggIACAAAAAAAAAAAAAAgAAAAAAEQAAgSAAAAAIAAI=</HashCode>
+      <HashCode>EEDgIACAAAAAAAIAAAAABAAAAAAAEAAYgQAAAAAgAAI=</HashCode>
       <FileName>Classes\Legend.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CovidPropagationGraphicInterface.Clock">
-    <Position X="11" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAIIAAA=</HashCode>
-      <FileName>Classes\Clock.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CovidPropagationGraphicInterface.ExtensionsMethods">
     <Position X="9" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAABA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAABA=</HashCode>
       <FileName>ExtensionsMethods.cs</FileName>
     </TypeIdentifier>
   </Class>

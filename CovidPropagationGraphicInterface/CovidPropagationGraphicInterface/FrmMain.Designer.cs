@@ -35,8 +35,8 @@ namespace CovidPropagationGraphicInterface
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.lblClock = new System.Windows.Forms.Label();
             this.btnLegend = new System.Windows.Forms.Button();
-            this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
-            this.pieChart1 = new LiveCharts.WinForms.PieChart();
+            this.crtChart = new LiveCharts.WinForms.CartesianChart();
+            this.pieChart = new LiveCharts.WinForms.PieChart();
             this.graphicInterface = new CovidPropagationGraphicInterface.GraphicInterface();
             this.SuspendLayout();
             // 
@@ -85,21 +85,22 @@ namespace CovidPropagationGraphicInterface
             this.btnLegend.UseVisualStyleBackColor = true;
             this.btnLegend.Click += new System.EventHandler(this.btnLegend_Click);
             // 
-            // cartesianChart1
+            // crtChart
             // 
-            this.cartesianChart1.Location = new System.Drawing.Point(549, 32);
-            this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(440, 394);
-            this.cartesianChart1.TabIndex = 5;
-            this.cartesianChart1.Text = "cartesianChart1";
+            this.crtChart.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.crtChart.Location = new System.Drawing.Point(549, 32);
+            this.crtChart.Name = "crtChart";
+            this.crtChart.Size = new System.Drawing.Size(440, 394);
+            this.crtChart.TabIndex = 5;
+            this.crtChart.Text = "cartesianChart1";
             // 
-            // pieChart1
+            // pieChart
             // 
-            this.pieChart1.Location = new System.Drawing.Point(995, 23);
-            this.pieChart1.Name = "pieChart1";
-            this.pieChart1.Size = new System.Drawing.Size(425, 403);
-            this.pieChart1.TabIndex = 6;
-            this.pieChart1.Text = "pieChart1";
+            this.pieChart.Location = new System.Drawing.Point(995, 23);
+            this.pieChart.Name = "pieChart";
+            this.pieChart.Size = new System.Drawing.Size(425, 403);
+            this.pieChart.TabIndex = 6;
+            this.pieChart.Text = "pieChart1";
             // 
             // graphicInterface
             // 
@@ -114,8 +115,8 @@ namespace CovidPropagationGraphicInterface
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1432, 438);
-            this.Controls.Add(this.pieChart1);
-            this.Controls.Add(this.cartesianChart1);
+            this.Controls.Add(this.pieChart);
+            this.Controls.Add(this.crtChart);
             this.Controls.Add(this.btnLegend);
             this.Controls.Add(this.lblClock);
             this.Controls.Add(this.btnStop);
@@ -136,8 +137,8 @@ namespace CovidPropagationGraphicInterface
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label lblClock;
         private System.Windows.Forms.Button btnLegend;
-        private LiveCharts.WinForms.CartesianChart cartesianChart1;
-        private LiveCharts.WinForms.PieChart pieChart1;
+        private LiveCharts.WinForms.CartesianChart crtChart;
+        private LiveCharts.WinForms.PieChart pieChart;
     }
 }
 

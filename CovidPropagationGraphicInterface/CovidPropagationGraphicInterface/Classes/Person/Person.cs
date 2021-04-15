@@ -17,6 +17,7 @@ namespace CovidPropagationGraphicInterface
         private float _movementX;
         private float _movementY;
         private State _state;
+        Car car;// Variable temporaire pour régler un bug
 
         internal Trajectory Trajectory { get => _trajectory; }
 
@@ -27,6 +28,7 @@ namespace CovidPropagationGraphicInterface
             _color = GlobalVariables.healthy_Person_Brush;
             _size = GlobalVariables.person_Size;
             _trajectory = new Trajectory();
+            car = new Car();
             TeleportToLocation();
         }
 
@@ -36,6 +38,7 @@ namespace CovidPropagationGraphicInterface
             switch (_planning.GetActivity())
             {
                 case Car car:
+                    this.car = car;
                     PointF carDestination = _planning.NextLocation;
                     car.TeleportToLocation(_location);
                     car.SetDestination(carDestination);
@@ -44,11 +47,11 @@ namespace CovidPropagationGraphicInterface
                     _trajectory.SetTrajectory(_location, carDestination);
                     break;
                 case Bus bus:
-                    // If Bus empty, Find bus and initialize
                     TeleportToLocation(bus.Inside);// Remplacer par un déplacement
                     _trajectory.Enabled = false;
                     break;
                 default:
+                    car.IsDisplayed = false;
                     CalculateMovementSpeed();
                     _trajectory.Enabled = false;
                     break;

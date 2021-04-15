@@ -81,7 +81,7 @@ namespace CovidPropagationGraphicInterface
                     buses.ForEach(x => x.GoToLocation());
                     _currentAnimationPerPeriod++;
                 }
-                Invalidate(true);
+                Invalidate();
             }
         }
 

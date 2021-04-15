@@ -1,6 +1,8 @@
 ﻿using CovidPropagationGraphicInterface.Classes;
 using CovidPropagationGraphicInterface.Classes.Person;
 using CovidPropagationGraphicInterface.Classes.Vehicle;
+using LiveCharts;
+using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,6 +19,7 @@ namespace CovidPropagationGraphicInterface
         BuildingGenerator buildingGenerator;
         BusLineGenerator busLineGenerator;
         State testChange; // test le changement d'état d'un individus
+        List<LineSeries> dummyDataChart;
 
         FrmLegend frmLegend;
         public FrmMain()
@@ -37,6 +40,17 @@ namespace CovidPropagationGraphicInterface
             dummyBus = busLineGenerator.Buses;
             graphicInterface.Generate(dummyPersons, buildingGenerator.Buildings, dummyVehicle, dummyBus);
             SetClockTime();
+
+            // ⚠️
+            dummyDataChart = new List<LineSeries>();
+            dummyDataChart.Add(new LineSeries { Title = "Infecté(s)", Values = new ChartValues<double>() { 0, 1, 1, 5, 1, 1, 0 } });
+            crtChart.SetData(dummyDataChart);
+
+            List<PieSeries> dummyDataPie = new List<PieSeries>();
+            dummyDataPie.Add(new PieSeries { Title = "Sain(s)", Values = new ChartValues<double>() { 30 } });
+            dummyDataPie.Add(new PieSeries { Title = "Infecté(s)", Values = new ChartValues<double>() { 1 } });
+            pieChart.SetData(dummyDataPie);
+            // ⚠️
         }
 
         private void Start_Click(object sender, EventArgs e)
@@ -147,6 +161,7 @@ namespace CovidPropagationGraphicInterface
         private void Timer_Tick(object sender, EventArgs e)
         {
             SetClockTime();
+            dummyDataChart[0].Values.Add(2d);
         }
 
         private void SetClockTime()
