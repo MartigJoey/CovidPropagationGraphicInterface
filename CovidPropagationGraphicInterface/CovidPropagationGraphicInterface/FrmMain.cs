@@ -32,8 +32,8 @@ namespace CovidPropagationGraphicInterface
             timer.Interval = GlobalVariables.TIMER_INTERVAL;
             TimeManager.Init();
             buildingGenerator = new BuildingGenerator();
-            dummyVehicle = GenerateDummyVehicle(31);
-            dummyPersons = GenerateDummyPersons(31);
+            dummyVehicle = GenerateDummyVehicle(1000);
+            dummyPersons = GenerateDummyPersons(1000);
             busLineGenerator = new BusLineGenerator(buildingGenerator.CenterZoneTopLeft, buildingGenerator.CenterZoneBottomRight, 
                                                     buildingGenerator.PerimeterZoneTopLeft, buildingGenerator.PerimeterZoneBottomRight);
 
@@ -43,7 +43,7 @@ namespace CovidPropagationGraphicInterface
 
             // ⚠️
             dummyDataChart = new List<LineSeries>();
-            dummyDataChart.Add(new LineSeries { Title = "Infecté(s)", Values = new ChartValues<double>() { 0, 1, 1, 5, 1, 1, 0 } });
+            dummyDataChart.Add(new LineSeries { Title = "Infecté(s)", Values = new ChartValues<double>() { 0, 1, 2, 4, 2, 1, 0 } });
             crtChart.SetData(dummyDataChart);
 
             List<PieSeries> dummyDataPie = new List<PieSeries>();
@@ -96,7 +96,7 @@ namespace CovidPropagationGraphicInterface
         {
             Classes.Person.Day[] day = new Classes.Person.Day[GlobalVariables.NUMBER_OF_DAY];
 
-            int nbBuilding = buildingGenerator.Buildings.CountFromZero();
+            int nbBuilding = buildingGenerator.Buildings.Count;
             Building firstactivity = buildingGenerator.Buildings[rdm.Next(0, nbBuilding)];
             Building secondactivity = buildingGenerator.Buildings[rdm.Next(0, nbBuilding)];
             Building thirdactivity = buildingGenerator.Buildings[rdm.Next(0, nbBuilding)];
