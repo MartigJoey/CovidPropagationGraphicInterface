@@ -18,13 +18,12 @@ namespace CovidPropagationGraphicInterface
         BusLineGenerator busLineGenerator;
         State testChange; // test le changement d'état d'un individus
 
+        FrmLegend frmLegend;
         public FrmMain()
         {
             InitializeComponent();
-            Size oneThird = new Size(graphicInterface.Size.Width / 3, 0);
             GlobalVariables.Interface_Size = graphicInterface.Size;
             graphicInterface.Size = GlobalVariables.Interface_Size;
-            GlobalVariables.interface_Size_Without_Legend = Size.Subtract(graphicInterface.Size, oneThird);
 
             timer.Tick += new EventHandler(graphicInterface.OnTick);
             timer.Interval = GlobalVariables.TIMER_INTERVAL;
@@ -37,6 +36,7 @@ namespace CovidPropagationGraphicInterface
 
             dummyBus = busLineGenerator.Buses;
             graphicInterface.Generate(dummyPersons, buildingGenerator.Buildings, dummyVehicle, dummyBus);
+            SetClockTime();
         }
 
         private void Start_Click(object sender, EventArgs e)
@@ -144,9 +144,20 @@ namespace CovidPropagationGraphicInterface
             return vehicles;
         }
 
-        private List<Bus> GenerateDummyBus()
+        private void Timer_Tick(object sender, EventArgs e)
         {
-            return new List<Bus>();
+            SetClockTime();
+        }
+
+        private void SetClockTime()
+        {
+            lblClock.Text = $"Jour : {TimeManager.CurrentDayString} Heure : {TimeManager.CurrentHour}";
+        }
+
+        private void btnLegend_Click(object sender, EventArgs e)
+        {
+            frmLegend = new FrmLegend();
+            frmLegend.Show();
         }
     }
 }

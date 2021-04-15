@@ -13,8 +13,6 @@ namespace CovidPropagationGraphicInterface
         List<Vehicle> vehicles;
         List<Bus> buses;
 
-        Clock clock;
-        Legend legend;
         int _currentAnimationPerPeriod; // Nombre de mouvements effectué durant une periode
 
         Bitmap bmp = null;
@@ -26,15 +24,10 @@ namespace CovidPropagationGraphicInterface
         public GraphicInterface()
         {
             DoubleBuffered = true;
-            clock = new Clock(new Point(750, 10));                  // %
-            legend = new Legend(new Point(750, 60));                // %
-            Paint += clock.Paint;
-            Paint += legend.Paint;
             animationTimer = new Timer();
             animationTimer.Tick += new EventHandler(AnimationOnTick);
             animationTimer.Interval = GlobalVariables.ANIMATION_TIMER_INTERVAL;
             _currentAnimationPerPeriod = 0;
-
         }
 
         public void Generate(List<Person> persons, List<Building> buildings, List<Vehicle> vehicles, List<Bus> buses)
@@ -65,7 +58,7 @@ namespace CovidPropagationGraphicInterface
                 g = Graphics.FromImage(bmp);
 
             PaintEventArgs p = new PaintEventArgs(g, e.ClipRectangle);
-            g.Clear(Color.DarkSlateGray);
+            g.Clear(GlobalVariables.background_Color);
             base.OnPaint(p);
             e.Graphics.DrawImage(bmp, new Point(0, 0));
         }
@@ -101,9 +94,5 @@ namespace CovidPropagationGraphicInterface
         {
             animationTimer.Enabled = false;
         }
-
-        
-
-        // méthode de modification de la taille des batiments, véhicules et individus en fonction du nombre d'éléments.
     }
 }

@@ -11,7 +11,7 @@ namespace CovidPropagationGraphicInterface.Classes
 
         public const int ANIMATION_FPS = 60;
         public const int TIMER_INTERVAL = 1000; // 50 minimum
-        public const int ANIMATION_TIMER_INTERVAL =  15;
+        public const int ANIMATION_TIMER_INTERVAL =  15; // équivaut à ~60 images par seconde
         public const int ANIMATION_PER_PERIOD = (int)(ANIMATION_FPS / (1000f / TIMER_INTERVAL));
 
         public const int BUS_MAX_PERSON = 18;
@@ -20,8 +20,7 @@ namespace CovidPropagationGraphicInterface.Classes
         public const int MAX_PERSONS_TO_DISPLAY_TRAJECTORY = 30;
 
         // Graphical Interface
-        // Size
-        public static Size interface_Size_Without_Legend = new Size(0, 0);
+            // Size
         private static Size interface_Size = new Size(0, 0);
         private static Size min_Interface_Size = new Size(400, 400);
         private static Size max_Interface_Size = new Size(1000, 1000);
@@ -42,8 +41,11 @@ namespace CovidPropagationGraphicInterface.Classes
 
             return value;
         }
-        // Buildings 
+
         // Colors
+        public readonly static Color background_Color = Color.Gray;
+        // Buildings 
+            // Colors
         public readonly static Pen home_Pen_Color = Pens.Blue;
         public readonly static Pen school_Pen_Color = Pens.Beige;
         public readonly static Pen hospital_Pen_Color = Pens.Red;
@@ -51,7 +53,7 @@ namespace CovidPropagationGraphicInterface.Classes
         public readonly static Pen supermarket_Pen_Color = Pens.Green;
         public readonly static Pen restaurant_Pen_Color = Pens.LightGreen;
 
-        // Size
+            // Size
         public readonly static Size default_building_size = new Size(50, 50); // %
 
         // Persons 

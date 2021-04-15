@@ -232,3 +232,14 @@
   - Les batiments changent de taille en fonction de la taille de la form
   - Bug concernant la hauteur. Ne fonctionne pas correctement si la taille est insuffisante.
     - La taille semble être correcte en donnée mais pas à l'affichage.
+
+# 15.04.2021
+- Essai de régler le bug de taille
+  - Problème détecté dans l'arrondi.
+  - Problème réglé en ajoutant la taille des bus dans le calcul
+- Modification de la légende et de l'horloge
+- Suppression de la classe Clock pour un label
+  - Simplifie le resize du control
+- Extraction de la légende du control "Graphic interface" à une form extern.
+  - Léger problème de nommage causant un bug entre FrmLegend.cs et Legend.cs. Réglé en recréant la form et la classe et en nommant FrmLegend dès le départ.
+- Intégration des graphiques

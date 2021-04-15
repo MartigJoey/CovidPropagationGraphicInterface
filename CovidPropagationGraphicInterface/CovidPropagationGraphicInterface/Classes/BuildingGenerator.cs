@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -97,7 +98,7 @@ namespace CovidPropagationGraphicInterface.Classes
             sizeWidth += _leftColumn.Max(b => b.Size.Width);
             sizeWidth += _rightColumn.Max(b => b.Size.Width);
             sizeWidth += GlobalVariables.bus_Size.Width * nbtotalPerimeterBusLine;
-            differenceWidth = sizeWidth - GlobalVariables.interface_Size_Without_Legend.Width;
+            differenceWidth = sizeWidth - (GlobalVariables.Interface_Size.Width - GlobalVariables.bus_Size.Width * nbtotalPerimeterBusLine);
 
             leftColumnSizeHeight = _leftColumn.Sum(b => b.Size.Height);
             rightColumnSizeHeight = _rightColumn.Sum(b => b.Size.Height);
@@ -105,31 +106,16 @@ namespace CovidPropagationGraphicInterface.Classes
             sizeHeight += _topRow.Max(b => b.Size.Height);
             sizeHeight += _bottomRow.Max(b => b.Size.Height);
             sizeHeight += GlobalVariables.bus_Size.Width * nbtotalPerimeterBusLine;
-            differenceHeight = sizeHeight - GlobalVariables.interface_Size_Without_Legend.Height;
+            differenceHeight = sizeHeight - (GlobalVariables.Interface_Size.Height - GlobalVariables.bus_Size.Width * nbtotalPerimeterBusLine);
 
             float sizeChangeInPercentWidth = differenceWidth / sizeWidth * 100f * -1;
             float sizeChangeInPercentHeight = differenceHeight / sizeHeight * 100f * -1;
 
             buildings.ForEach(b => {
-                SizeF newSize = new SizeF(b.Size.Width / 100f * sizeChangeInPercentWidth,
-                                          b.Size.Height / 100f * sizeChangeInPercentHeight);
+            SizeF newSize = new SizeF(b.Size.Width / 100f * sizeChangeInPercentWidth,
+                                      b.Size.Height / 100f * sizeChangeInPercentHeight);
                 b.Size = Size.Add(b.Size, Size.Round(newSize));
             });
-
-            System.Console.WriteLine(GlobalVariables.interface_Size_Without_Legend.Height);
-            System.Console.WriteLine(sizeHeight);
-            System.Console.WriteLine(differenceHeight);
-            System.Console.WriteLine(sizeChangeInPercentHeight);
-
-            leftColumnSizeHeight = _leftColumn.Sum(b => b.Size.Height);
-            rightColumnSizeHeight = _rightColumn.Sum(b => b.Size.Height);
-            sizeHeight = leftColumnSizeHeight > rightColumnSizeHeight ? leftColumnSizeHeight : rightColumnSizeHeight;
-            sizeHeight += _topRow.Max(b => b.Size.Height);
-            sizeHeight += _bottomRow.Max(b => b.Size.Height);
-            sizeHeight += GlobalVariables.bus_Size.Width * nbtotalPerimeterBusLine;
-            System.Console.WriteLine(sizeHeight);
-            System.Console.WriteLine(GlobalVariables.interface_Size_Without_Legend.Height);
-
             return buildings;
         }
 
